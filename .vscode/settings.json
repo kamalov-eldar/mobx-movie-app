@@ -1,0 +1,7 @@
+{
+    "prettier.printWidth": 200,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.singleAttributePerLine": false,
+    "editor.wordWrapColumn": 200,
+    "editor.formatOnSave": true
+}
