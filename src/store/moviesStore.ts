@@ -1,45 +1,45 @@
-import {
-    action,
-    makeAutoObservable,
-    observable,
-    makeObservable,
-    runInAction,
-} from 'mobx';
-import { TMovie } from '../types';
+import { makeAutoObservable } from 'mobx';
+import { MoviesResponse, TMovie } from '../types';
 import { fetchData } from '../api/api';
+import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
 
 export interface IMoviesData {
-    movies: TMovie[];
+    movies: IPromiseBasedObservable<TMovie[]>;
     isLoading: boolean;
     error: string | null;
     pagesCount: number;
 }
-class MoviesStore implements IMoviesData {
-    movies = [];
+class MoviesStore {
+    data?: IPromiseBasedObservable<MoviesResponse>;
+    movies?: IPromiseBasedObservable<TMovie[]>;
+
     isLoading = false;
     error = null;
     pagesCount = 0;
 
     constructor() {
         makeAutoObservable(this);
-        /* makeObservable(this, , {
-            movies: observable,
-            isLoading: observable,
-            pagesCount: observable,
-        });
-        */
     }
 
-    get getMovies = async () => {
+    getMovies = () => {
         console.log('getMovies: ');
+        this.data = fromPromise(fetchData());
+        this.movies = fromPromise(fetchData().then((data) => data.films));
+    };
+}
 
-        try {
+export const moviesStore = new MoviesStore();
+
+//export default new MoviesStore();
+/*  try {
             this.isLoading = true;
             const res = await fetchData();
+            console.log('res: ', res);
 
-            // console.log('res: ', JSON.stringify(res.films));
+            this.movies = res.films.map((item: any) => item);
+            this.pagesCount = res.pagesCount;
 
-            this.movies = res.films.map((item: any) => {
+             this.movies = res.films.map((item: any) => {
                 const film: TMovie = {
                     filmId: item.filmId,
                     filmLength: item.filmLength,
@@ -51,7 +51,7 @@ class MoviesStore implements IMoviesData {
                 };
                 return film;
             });
-            /*  runInAction(() => {
+              runInAction(() => {
                 // runInAction объединение в 1 изменение = 1 перерендер
                 this.movies = res.films.map((item: any) => {
                     const film: TMovie = {
@@ -65,13 +65,9 @@ class MoviesStore implements IMoviesData {
                     };
                     return film;
                 });
-                this.pagesCount = res.pagesCount;
                 this.isLoading = false;
-            }); */
+            });
         } catch {
             this.isLoading = false;
         }
-    };
-}
-
-export default new MoviesStore();
+        */

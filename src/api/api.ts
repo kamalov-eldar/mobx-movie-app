@@ -12,6 +12,19 @@ export const fetchData = async (pageNumber = 1) =>
             },
         )
     ).data;
+
+/* export const getData = async () => {
+    await new Promise();
+};
+
+const getTodos = async (): Promise<Todo[]> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return [
+        { id: 1, title: 'Clean bathroom' },
+        { id: 2, title: 'Feed the cat ' },
+    ];
+}; */
+
 /* .then((response) => {
             this.data = response.data;
             this.isFetching = false;

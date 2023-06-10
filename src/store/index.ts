@@ -1,6 +1,6 @@
 import { injectStores } from '@mobx-devtools/tools';
 
-import MoviesStore from './moviesStore';
+import { moviesStore } from './moviesStore';
 
 /* injectStores({
     MoviesStore,
@@ -18,4 +18,4 @@ const stores = {
     // CurrenciesStore: new CurrenciesStore(),
 };
 
-export default { MoviesStore };
+export default { moviesStore };

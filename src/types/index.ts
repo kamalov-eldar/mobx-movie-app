@@ -7,3 +7,8 @@ export type TMovie = {
     rating: string;
     year: string;
 };
+
+export interface MoviesResponse {
+    films: TMovie[];
+    pagesCount: number;
+}
