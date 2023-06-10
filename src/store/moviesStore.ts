@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { MoviesResponse, TMovie } from '../types';
-import { fetchData } from '../api/api';
+import { fetchData, fetchMovie } from '../api/api';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
 
 export interface IMoviesData {
@@ -24,7 +24,11 @@ class MoviesStore {
     getMovies = () => {
         console.log('getMovies: ');
         this.data = fromPromise(fetchData());
-        this.movies = fromPromise(fetchData().then((data) => data.films));
+        // this.movies = fromPromise(fetchData().then((data) => data.films));
+    };
+    getInfoFilm = (movieId: number) => {
+        const infoFilm = fromPromise(fetchMovie(movieId));
+        // console.log('infoFilm: ', infoFilm);
     };
 }
 

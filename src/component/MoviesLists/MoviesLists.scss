@@ -1,0 +1,10 @@
+.movies {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 50px;
+    padding-top: 70px;
+    gap: 20px;
+    width: 100%;
+}

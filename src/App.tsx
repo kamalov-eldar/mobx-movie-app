@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { MoviesLists } from './component/MoviesLists/MoviesLists';
 import { moviesStore } from './store/moviesStore';
-import './App.css';
+import './App.scss';
 
 function App() {
     return (
@@ -10,11 +10,15 @@ function App() {
                 <p>
                     Edit <code>src/App.tsx</code> and save to reload.
                 </p>
-                <p>Edit</p>
             </header>
             <section className="container">
                 <MoviesLists />
             </section>
+            <header className="App-header">
+                <p>
+                    Edit <code>src/App.tsx</code> and save to reload.
+                </p>
+            </header>
         </div>
     );
 }
