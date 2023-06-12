@@ -18,9 +18,7 @@ const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
 );
 root.render(
-    <Provider store={store}>
-        <RootStoreContext.Provider value={new RootStore()}>
-            <App />
-        </RootStoreContext.Provider>
-    </Provider>,
+    <RootStoreContext.Provider value={new RootStore()}>
+        <App />
+    </RootStoreContext.Provider>,
 );

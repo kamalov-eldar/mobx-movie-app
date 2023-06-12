@@ -1,15 +1,17 @@
 import { FC, useEffect } from 'react';
-import { moviesStore } from '../../store/movies-store';
 import { MovieItem } from '../MovieItem/MovieItem';
 import { TMovie } from '../../types';
 import { observer } from 'mobx-react-lite';
 import '../MoviesLists/MoviesLists.scss';
+import { useStores } from '../../root-store-context';
 
 export const MoviesLists: FC = observer(() => {
     console.log('MoviesLists: ');
-    const { getMovies, getInfoFilm } = moviesStore;
+    const {
+        moviesStore: { getMovies, getInfoFilm, data },
+    } = useStores();
 
-    console.log('moviesStore.data: ', moviesStore.data);
+    // const { getMovies, getInfoFilm } = moviesStore;
 
     useEffect(() => {
         console.log('useEffect: ');
@@ -17,11 +19,11 @@ export const MoviesLists: FC = observer(() => {
     }, []);
 
     // Без этого ругается TS
-    if (!moviesStore.data) {
+    if (!data) {
         return null;
     }
 
-    return moviesStore.data?.case({
+    return data?.case({
         pending: () => (
             <div className="loader">
                 <span className="loader__text">Загрузка...</span>
