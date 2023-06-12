@@ -9,13 +9,9 @@ export interface IMoviesData {
     error: string | null;
     pagesCount: number;
 }
+
 class MoviesStore {
     data?: IPromiseBasedObservable<MoviesResponse>;
-    movies?: IPromiseBasedObservable<TMovie[]>;
-
-    isLoading = false;
-    error = null;
-    pagesCount = 0;
 
     constructor() {
         makeAutoObservable(this);
@@ -24,6 +20,7 @@ class MoviesStore {
     getMovies = () => {
         console.log('getMovies: ');
         this.data = fromPromise(fetchData());
+        // console.log('this.data: ', this.data);
         // this.movies = fromPromise(fetchData().then((data) => data.films));
     };
     getInfoFilm = (movieId: number) => {
