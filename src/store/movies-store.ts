@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import { MoviesResponse, TMovie } from '../types';
-import { fetchData, fetchMovie } from '../api/api';
+import { IMoviesResponse, TMovie } from '../types';
+import { fetchData, fetchMovie } from '../api/axiosClient';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
 
 export interface IMoviesData {
@@ -11,7 +11,7 @@ export interface IMoviesData {
 }
 
 class MoviesStore {
-    data?: IPromiseBasedObservable<MoviesResponse>;
+    data?: IPromiseBasedObservable<IMoviesResponse>;
 
     constructor() {
         makeAutoObservable(this);

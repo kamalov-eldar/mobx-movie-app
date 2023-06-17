@@ -2,9 +2,11 @@ import { observer } from 'mobx-react-lite';
 import { MoviesLists } from './component/MoviesLists/MoviesLists';
 import { moviesStore } from './store/movies-store';
 import './App.scss';
+import { useEffect } from 'react';
 
 function App() {
     console.log('App: ');
+    
     return (
         <div className="App">
             <header className="App-header">

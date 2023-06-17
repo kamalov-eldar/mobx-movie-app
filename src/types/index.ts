@@ -13,7 +13,7 @@ export type TMovie = {
     genres: TGenre[];
 };
 
-export interface MoviesResponse {
+export interface IMoviesResponse {
     films: TMovie[];
     pagesCount: number;
 }
