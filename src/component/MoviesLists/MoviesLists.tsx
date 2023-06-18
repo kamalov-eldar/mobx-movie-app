@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { MovieItem } from '../MovieItem/MovieItem';
-import { TMovie } from '../../types';
+import { TMovieKP } from '../../types';
 import { observer } from 'mobx-react-lite';
 import '../MoviesLists/MoviesLists.scss';
 import { useStores } from '../../root-store-context';
@@ -33,7 +33,7 @@ export const MoviesLists: FC = observer(() => {
         fulfilled: (data) => {
             return (
                 <div className="movies">
-                    {data.films.map((movie: TMovie) => {
+                    {data.films.map((movie: TMovieKP) => {
                         /*  const infoFilm = getInfoFilm(movie.filmId);
                         console.log('infoFilm: ', infoFilm); */
                         return <MovieItem key={movie.filmId} movie={movie} />;

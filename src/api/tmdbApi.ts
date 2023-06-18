@@ -18,6 +18,27 @@ import axiosClient from './axiosClient';
     on_the_air: 'on_the_air',
 }; */
 
+export type TResponseMovie = {
+    adult: boolean;
+    backdrop_path: string;
+    genre_ids: Array<number>;
+    id: number;
+    original_language: string;
+    original_title: string;
+    overview: string;
+    popularity: number;
+    poster_path: string;
+    release_date: string;
+    title: string;
+    video: false;
+    vote_average: number;
+    vote_count: number;
+};
+
+export interface TResponseMovieList {
+    results: TResponseMovie[];
+}
+
 type TMovieType = 'upcoming' | 'popular' | 'top_rated';
 type TTVType = 'popular' | 'on_the_air' | 'top_rated';
 type TCategory = 'movie' | 'tv';
@@ -27,8 +48,10 @@ const tmdbApi = {
         movieType: TMovieType,
         params: AxiosRequestConfig<any> | undefined,
     ) => {
+        console.log('getMoviesList: ');
+
         const url = 'movie/' + movieType;
-        return axiosClient.get(url, params);
+        return axiosClient.get<never, TResponseMovieList>(url, params);
     },
     getTvList: (
         tvType: TTVType,
@@ -65,29 +88,5 @@ const tmdbApi = {
         return axiosClient.get(url, { params: {} });
     },
 };
-
-export const fetchData = async (pageNumber = 1) =>
-    (
-        await axios.get(
-            `https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&page=${pageNumber}`,
-            {
-                headers: {
-                    'Content-Type': 'aplication/json',
-                    'X-API-KEY': '8ccb0f71-adf6-4b8f-9927-980b4f08e9d5',
-                },
-            },
-        )
-    ).data;
-
-export const fetchMovie = async (movieId = 927898) =>
-    await axios.get(
-        `https://kinopoiskapiunofficial.tech/api/v2.2/films/${movieId}`,
-        {
-            headers: {
-                'Content-Type': 'aplication/json',
-                'X-API-KEY': '8ccb0f71-adf6-4b8f-9927-980b4f08e9d5',
-            },
-        },
-    );
 
 export default tmdbApi;

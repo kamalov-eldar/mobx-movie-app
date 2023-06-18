@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import { TMovie } from '../../types';
+import { TMovieKP } from '../../types';
 import '../MovieItem/MovieItem.scss';
 
 interface MovieItemProps {
-    movie: TMovie;
+    movie: TMovieKP;
 }
 
 export const MovieItem: FC<MovieItemProps> = ({ movie }) => {

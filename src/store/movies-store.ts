@@ -1,17 +1,17 @@
 import { makeAutoObservable } from 'mobx';
-import { IMoviesResponse, TMovie } from '../types';
-import { fetchData, fetchMovie } from '../api/axiosClient';
+import { IMoviesResponseKP, TMovieKP } from '../types';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
+import { fetchData, fetchMovie } from '../api/apiKinopoisk';
 
 export interface IMoviesData {
-    movies: IPromiseBasedObservable<TMovie[]>;
+    movies: IPromiseBasedObservable<TMovieKP[]>;
     isLoading: boolean;
     error: string | null;
     pagesCount: number;
 }
 
 class MoviesStore {
-    data?: IPromiseBasedObservable<IMoviesResponse>;
+    data?: IPromiseBasedObservable<IMoviesResponseKP>;
 
     constructor() {
         makeAutoObservable(this);

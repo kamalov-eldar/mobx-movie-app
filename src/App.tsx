@@ -1,24 +1,37 @@
-import { observer } from 'mobx-react-lite';
-import { MoviesLists } from './component/MoviesLists/MoviesLists';
-import { moviesStore } from './store/movies-store';
 import './App.scss';
-import { useEffect } from 'react';
+//import 'swipper/swipper.min.css';
+import './assets/boxicons-2.0.7/css/boxicons.min.css';
+import Footer from './component/footer/Footer';
+import Header from './component/header/Header';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Routes from './routes/Routes';
 
 function App() {
     console.log('App: ');
-    
+
     return (
-        <div className="App">
-            <header className="App-header">
-                <p>Movie Application</p>
-            </header>
-            <section className="container">
-                <MoviesLists />
-            </section>
-            <header className="App-header">
-                <p>The End</p>
-            </header>
-        </div>
+        <BrowserRouter>
+            <Route
+                render={(props) => (
+                    <>
+                        <Header />
+                        <Routes />
+                        <Footer />
+                    </>
+                )}
+            />
+            {/* <div className="App">
+                <header className="App-header">
+                    <p>Movie Application</p>
+                </header>
+                <section className="container">
+                    <MoviesLists />
+                </section>
+                <header className="App-header">
+                    <p>The End</p>
+                </header>
+            </div> */}
+        </BrowserRouter>
     );
 }
 
