@@ -1,4 +1,7 @@
 declare module '*.module.scss';
+declare module '*.css';
+//declare module '*swiper/swiper.min.css';
+
 declare module '*.svg' {
     const value: string;
     export default value;

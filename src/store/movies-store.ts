@@ -1,7 +1,10 @@
-import { makeAutoObservable } from 'mobx';
-import { IMoviesResponseKP, TMovieKP } from '../types';
+import { TMovieItem, TResponseMovieList } from './../api/types';
+import { makeAutoObservable, makeObservable, observable } from 'mobx';
+import { IMoviesResponseKP, TMovieKP, TListMovieType } from '../types';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
 import { fetchData, fetchMovie } from '../api/apiKinopoisk';
+import tmdbApi from '../api/tmdbApi';
+import { AxiosRequestConfig } from 'axios';
 
 export interface IMoviesData {
     movies: IPromiseBasedObservable<TMovieKP[]>;
@@ -11,18 +14,25 @@ export interface IMoviesData {
 }
 
 class MoviesStore {
-    data?: IPromiseBasedObservable<IMoviesResponseKP>;
-
+    dataKP?: IPromiseBasedObservable<IMoviesResponseKP>;
+    //data = fromPromise(tmdbApi.getMoviesList('popular', { page: 1 }));
+    data?: IPromiseBasedObservable<TResponseMovieList>;
     constructor() {
-        makeAutoObservable(this);
+        makeObservable(this, {
+            data: observable,
+        });
     }
 
-    getMovies = () => {
-        console.log('getMovies: ');
-        this.data = fromPromise(fetchData());
+    /*  getMoviesKP = () => {
+        this.dataKP = fromPromise(fetchData());
         // console.log('this.data: ', this.data);
         // this.movies = fromPromise(fetchData().then((data) => data.films));
+    }; */
+
+    getMovieList = (movieType: TListMovieType, params: AxiosRequestConfig<any> | undefined) => {
+        this.data = fromPromise(tmdbApi.getMovieList(movieType, params).then((data) => data));
     };
+
     getInfoFilm = (movieId: number) => {
         const infoFilm = fromPromise(fetchMovie(movieId));
         // console.log('infoFilm: ', infoFilm);
@@ -30,45 +40,3 @@ class MoviesStore {
 }
 
 export const moviesStore = new MoviesStore();
-
-//export default new MoviesStore();
-/*  try {
-            this.isLoading = true;
-            const res = await fetchData();
-            console.log('res: ', res);
-
-            this.movies = res.films.map((item: any) => item);
-            this.pagesCount = res.pagesCount;
-
-             this.movies = res.films.map((item: any) => {
-                const film: TMovie = {
-                    filmId: item.filmId,
-                    filmLength: item.filmLength,
-                    nameEn: item.nameEn,
-                    nameRu: item.nameRu,
-                    posterUrl: item.posterUrl,
-                    rating: item.rating,
-                    year: item.year,
-                };
-                return film;
-            });
-              runInAction(() => {
-                // runInAction объединение в 1 изменение = 1 перерендер
-                this.movies = res.films.map((item: any) => {
-                    const film: TMovie = {
-                        filmId: item.filmId,
-                        filmLength: item.filmLength,
-                        nameEn: item.nameEn,
-                        nameRu: item.nameRu,
-                        posterUrl: item.posterUrl,
-                        rating: item.rating,
-                        year: item.year,
-                    };
-                    return film;
-                });
-                this.isLoading = false;
-            });
-        } catch {
-            this.isLoading = false;
-        }
-        */

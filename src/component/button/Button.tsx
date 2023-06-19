@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import './Button.scss';
 
 type ButtonPropsType = {
     onClick: () => void;
@@ -9,23 +10,21 @@ type ButtonPropsType = {
 const Button: FC<ButtonPropsType> = ({ onClick, className, children }) => {
     return (
         <button className={`btn ${className}`} onClick={() => onClick()}>
-            Button
             {children}
         </button>
     );
 };
 
-const OutlineButton: FC<ButtonPropsType> = ({
+export const OutlineButton: FC<ButtonPropsType> = ({
     onClick,
     className,
     children,
 }) => {
     return (
         <button
-            className={`btn-outline ${className}`}
+            className={`btn btn-outline ${className}`}
             onClick={() => onClick()}
         >
-            Button
             {children}
         </button>
     );

@@ -1,3 +1,13 @@
+//export type TListMovieType = 'upcoming' | 'popular' | 'top_rated';
+//export type TListTVType = 'popular' | 'on_the_air' | 'top_rated';
+export type TListType = 'popular' | 'top_rated';
+export type TCategoryType = 'movie' | 'tv';
+
+export type TCategoryItem = {
+    movie: TCategoryType;
+    listType: TListType;
+};
+
 export type TGenre = {
     genre: string;
 };

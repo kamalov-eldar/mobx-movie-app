@@ -1,13 +1,14 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
+import './Modal.scss';
 
 type ModalPropsType = {
     activeProps: boolean;
     id: string;
-    children: string;
+    children: ReactNode;
 };
 type ModalContentPropsType = {
     onClose: () => void;
-    children: string;
+    children: ReactNode;
 };
 
 const Modal: FC<ModalPropsType> = ({ activeProps, id, children }) => {
@@ -19,18 +20,13 @@ const Modal: FC<ModalPropsType> = ({ activeProps, id, children }) => {
 
     return (
         <div id={id} className={`modal ${active ? 'active' : ''}`}>
-            Modal
             {children}
         </div>
     );
 };
 
-export const ModalContent: FC<ModalContentPropsType> = ({
-    onClose,
-    children,
-}) => {
+export const ModalContent: FC<ModalContentPropsType> = ({ onClose, children }) => {
     const contentRef = useRef<HTMLDivElement | null>(null);
-    console.log('contentRef: ', contentRef);
 
     const closeModal = () => {
         if (contentRef) {
