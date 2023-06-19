@@ -9,8 +9,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Routes from './routes/Routes';
 
 function App() {
-    console.log('App: ');
-
     return (
         <BrowserRouter>
             <Route

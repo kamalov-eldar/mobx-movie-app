@@ -5,13 +5,13 @@ import { TResponseMovieList, TResponseTVList, TResponseVideosList } from './type
 
 const tmdbApi = {
     // https://api.themoviedb.org/3/movie/{'upcoming' | 'popular' | 'top_rated'}
-    getMovieList: (ListType: TListType, params: AxiosRequestConfig<any> | undefined) => {
-        const url = 'movie/' + ListType;
+    getMovieList: (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
+        const url = 'movie/' + listType;
         return axiosClient.get<never, TResponseMovieList>(url, params);
     },
     // https://api.themoviedb.org/3/tv/{'popular' | 'on_the_air' | 'top_rated'}
-    getTvList: (ListType: TListType, params: AxiosRequestConfig<any> | undefined) => {
-        const url = 'tv/' + ListType;
+    getTvList: (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
+        const url = 'tv/' + listType;
         return axiosClient.get<never, TResponseTVList>(url, params);
     },
     // https://api.themoviedb.org/3/movie/:movieId/videos

@@ -4,7 +4,8 @@ export type TListType = 'popular' | 'top_rated';
 export type TCategoryType = 'movie' | 'tv';
 
 export type TCategoryItem = {
-    movie: TCategoryType;
+    title: string;
+    category: TCategoryType;
     listType: TListType;
 };
 

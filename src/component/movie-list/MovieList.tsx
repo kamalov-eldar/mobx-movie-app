@@ -14,53 +14,154 @@ type MovieListProps = {
 };
 
 const MovieList: FC<MovieListProps> = ({ category, listType }) => {
-    const { moviesStore } = useStores();
-    const { data } = moviesStore;
+    /*  console.log('listType: ', listType);
+    console.log('category: ', category); */
+    const { moviesStore, tvStore } = useStores();
+    const { dataPopularMovieList, dataTopMovieList, getPopularMovieList, getTopMovieList } = moviesStore;
+    const { dataTopTVList, dataPopularTVList, getPopularTVList, getTopTVList } = tvStore;
 
     useEffect(() => {
-        const getList = async () => {
-            let response;
-            switch (category) {
-                case 'movie':
-                    // response = await tmdbApi.getMoviesList(movieType, {});
-                    break;
-                case 'tv':
-                    // response = await tmdbApi.getTvList(tvType, {});
-                    break;
-            }
-            if (response) {
-                //setItems(response.results);
-            }
-        };
+        switch (category) {
+            case 'movie':
+                if (listType === 'popular') {
+                    getPopularMovieList(listType, { params });
+                }
+                if (listType === 'top_rated') {
+                    getTopMovieList(listType, { params });
+                }
+                break;
+
+            case 'tv':
+                if (listType === 'popular') {
+                    getPopularTVList(listType, { params });
+                }
+                if (listType === 'top_rated') {
+                    getTopTVList(listType, { params });
+                }
+                break;
+        }
     }, []);
+
+    const params = { page: 1, language: 'ru-RU' };
+
+    // Без этого error TS
+    if (!dataPopularMovieList) {
+        return <div>No Data</div>;
+    }
+
+    // Без этого error TS
+    if (!dataTopMovieList) {
+        return <div>No Data</div>;
+    }
 
     return (
         <div className="movie-list">
-            {data?.case({
-                pending: () => (
-                    <div className="loader">
-                        <span className="loader__text">Загрузка...</span>
-                    </div>
-                ),
-                rejected: () => <div>Error</div>,
-                fulfilled: (list) => (
-                    <>
-                        <Swiper
-                            // modules={[Autoplay]}
-                            grabCursor={true}
-                            spaceBetween={10}
-                            slidesPerView={'auto'}
-                            // autoplay={{ delay: 3000 }}
-                        >
-                            {list.results.map((item, i) => (
-                                <SwiperSlide key={i}>
-                                    <img src={apiConfig.w500Image(item.poster_path)} alt="" />
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
-                    </>
-                ),
-            })}
+            {category === 'movie' &&
+                ((listType === 'popular' &&
+                    dataPopularMovieList?.case({
+                        pending: () => (
+                            <div className="loader">
+                                <span className="loader__text">Загрузка...</span>
+                            </div>
+                        ),
+                        rejected: () => <div>Error</div>,
+                        fulfilled: (list) => (
+                            <>
+                                <Swiper
+                                    // modules={[Autoplay]}
+                                    grabCursor={true}
+                                    spaceBetween={10}
+                                    slidesPerView={'auto'}
+                                    // autoplay={{ delay: 3000 }}
+                                >
+                                    {list.results.map((item, i) => (
+                                        <SwiperSlide key={i}>
+                                            <img src={apiConfig.w500Image(item.poster_path)} alt="" />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            </>
+                        ),
+                    })) ||
+                    (listType === 'top_rated' &&
+                        dataTopMovieList?.case({
+                            pending: () => (
+                                <div className="loader">
+                                    <span className="loader__text">Загрузка...</span>
+                                </div>
+                            ),
+                            rejected: () => <div>Error</div>,
+                            fulfilled: (list) => (
+                                <>
+                                    <Swiper
+                                        // modules={[Autoplay]}
+                                        grabCursor={true}
+                                        spaceBetween={10}
+                                        slidesPerView={'auto'}
+                                        // autoplay={{ delay: 3000 }}
+                                    >
+                                        {list.results.map((item, i) => (
+                                            <SwiperSlide key={i}>
+                                                <img src={apiConfig.w500Image(item.poster_path)} alt="" />
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </>
+                            ),
+                        })))}
+            {category === 'tv' &&
+                ((listType === 'top_rated' &&
+                    dataTopTVList?.case({
+                        pending: () => (
+                            <div className="loader">
+                                <span className="loader__text">Загрузка...</span>
+                            </div>
+                        ),
+                        rejected: () => <div>Error</div>,
+                        fulfilled: (list) => (
+                            <>
+                                <Swiper
+                                    // modules={[Autoplay]}
+                                    grabCursor={true}
+                                    spaceBetween={10}
+                                    slidesPerView={'auto'}
+                                    // autoplay={{ delay: 3000 }}
+                                >
+                                    {list.results.map((item, i) => (
+                                        <SwiperSlide key={i}>
+                                            <img src={apiConfig.w500Image(item.poster_path)} alt="" />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            </>
+                        ),
+                    })) ||
+                    (listType === 'popular' &&
+                        dataPopularTVList?.case({
+                            pending: () => (
+                                <div className="loader">
+                                    <span className="loader__text">Загрузка...</span>
+                                </div>
+                            ),
+                            rejected: () => <div>Error</div>,
+                            fulfilled: (list) => (
+                                <>
+                                    <Swiper
+                                        // modules={[Autoplay]}
+                                        grabCursor={true}
+                                        spaceBetween={10}
+                                        slidesPerView={'auto'}
+                                        // autoplay={{ delay: 3000 }}
+                                    >
+                                        {list.results.map((item, i) => (
+                                            <SwiperSlide key={i}>
+                                                <img src={apiConfig.w500Image(item.poster_path)} alt="" />
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </>
+                            ),
+                        })))}
         </div>
     );
 };

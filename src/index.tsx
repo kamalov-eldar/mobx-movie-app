@@ -9,13 +9,11 @@ import RootStore from './store/root-store';
 
 spy((evt) => {
     if (evt.type === 'action') {
-        console.log('evt', evt);
+        //console.log('evt', evt);
     }
 });
 
-const root = ReactDOM.createRoot(
-    document.getElementById('root') as HTMLElement,
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <RootStoreContext.Provider value={new RootStore()}>
         <App />

@@ -15,18 +15,14 @@ import { useStores } from '../../root-store-context';
 import { observer } from 'mobx-react-lite';
 
 const HeroSlide: FC = () => {
-    console.log('HeroSlide: ');
-
-    const [movieItems, setMovieItems] = useState<TMovieItem[]>([]);
-
     const { moviesStore } = useStores();
-    const { getMovieList, data } = moviesStore;
+    const { getPopularMovieList, dataPopularMovieList: dataListPopularMovies } = moviesStore;
 
     SwiperCore.use([Autoplay]);
 
     useEffect(() => {
         const params = { page: 1, language: 'ru-RU' };
-        getMovieList('popular', { params });
+        //getMovieList('popular', { params });
 
         /*  const getMovies = async () => {
             // const params = { page: 1 };
@@ -42,9 +38,14 @@ const HeroSlide: FC = () => {
         getMovies(); */
     }, []);
 
+    // Без этого error TS
+    if (!dataListPopularMovies) {
+        return <div>No Data</div>;
+    }
+
     return (
         <div className="hero-slide">
-            {data?.case({
+            {dataListPopularMovies?.case({
                 pending: () => (
                     <div className="loader">
                         <span className="loader__text">Загрузка...</span>
