@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import './Button.scss';
 
 type ButtonPropsType = {
     onClick: () => void;
     className?: string;
-    children?: string;
+    children?: ReactNode | string;
 };
 
 const Button: FC<ButtonPropsType> = ({ onClick, className, children }) => {
@@ -15,16 +15,9 @@ const Button: FC<ButtonPropsType> = ({ onClick, className, children }) => {
     );
 };
 
-export const OutlineButton: FC<ButtonPropsType> = ({
-    onClick,
-    className,
-    children,
-}) => {
+export const OutlineButton: FC<ButtonPropsType> = ({ onClick, className, children }) => {
     return (
-        <button
-            className={`btn btn-outline ${className}`}
-            onClick={() => onClick()}
-        >
+        <button className={`btn btn-outline ${className}`} onClick={() => onClick()}>
             {children}
         </button>
     );

@@ -7,6 +7,7 @@ import apiConfig from '../../api/apiConfig';
 import { TItemTV, TMovieItem } from '../../api/types';
 import { useStores } from '../../root-store-context';
 import { observer } from 'mobx-react';
+import MovieCard from '../movie-card/MovieCard';
 
 type MovieListProps = {
     category: TCategoryType;
@@ -45,14 +46,14 @@ const MovieList: FC<MovieListProps> = ({ category, listType }) => {
     const params = { page: 1, language: 'ru-RU' };
 
     // Без этого error TS
-    if (!dataPopularMovieList) {
+    /*  if (!dataPopularMovieList) {
         return <div>No Data</div>;
-    }
+    } */
 
     // Без этого error TS
-    if (!dataTopMovieList) {
+    /* if (!dataTopMovieList) {
         return <div>No Data</div>;
-    }
+    } */
 
     return (
         <div className="movie-list">
@@ -76,7 +77,7 @@ const MovieList: FC<MovieListProps> = ({ category, listType }) => {
                                 >
                                     {list.results.map((item, i) => (
                                         <SwiperSlide key={i}>
-                                            <img src={apiConfig.w500Image(item.poster_path)} alt="" />
+                                            <MovieCard movieItem={item} category={category} />
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>
@@ -102,7 +103,7 @@ const MovieList: FC<MovieListProps> = ({ category, listType }) => {
                                     >
                                         {list.results.map((item, i) => (
                                             <SwiperSlide key={i}>
-                                                <img src={apiConfig.w500Image(item.poster_path)} alt="" />
+                                                <MovieCard movieItem={item} category={category} />
                                             </SwiperSlide>
                                         ))}
                                     </Swiper>
@@ -129,7 +130,7 @@ const MovieList: FC<MovieListProps> = ({ category, listType }) => {
                                 >
                                     {list.results.map((item, i) => (
                                         <SwiperSlide key={i}>
-                                            <img src={apiConfig.w500Image(item.poster_path)} alt="" />
+                                            <MovieCard tvItem={item} category={category} />
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>
@@ -155,7 +156,7 @@ const MovieList: FC<MovieListProps> = ({ category, listType }) => {
                                     >
                                         {list.results.map((item, i) => (
                                             <SwiperSlide key={i}>
-                                                <img src={apiConfig.w500Image(item.poster_path)} alt="" />
+                                                <MovieCard tvItem={item} category={category} />
                                             </SwiperSlide>
                                         ))}
                                     </Swiper>

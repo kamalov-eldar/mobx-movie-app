@@ -14,20 +14,9 @@ export type TMovieItem = {
     vote_average: number;
     vote_count: number;
 };
-export type TResponseVideo = {
-    iso_639_1: string;
-    iso_3166_1: string;
-    name: string;
-    key: string;
-    site: string;
-    size: number;
-    type: string;
-    official: boolean;
-    published_at: string;
-    id: string;
-};
 
 export type TItemTV = {
+    title: string;
     backdrop_path: string;
     first_air_date: string;
     genre_ids: Array<number>;
@@ -41,6 +30,19 @@ export type TItemTV = {
     poster_path: string;
     vote_average: number;
     vote_count: number;
+};
+
+export type TResponseVideo = {
+    iso_639_1: string;
+    iso_3166_1: string;
+    name: string;
+    key: string;
+    site: string;
+    size: number;
+    type: string;
+    official: boolean;
+    published_at: string;
+    id: string;
 };
 
 export interface TResponseMovieList {
