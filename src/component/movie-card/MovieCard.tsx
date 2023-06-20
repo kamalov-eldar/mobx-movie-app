@@ -10,9 +10,10 @@ type MovieCardProps = {
     movieItem?: TMovieItem;
     tvItem?: TItemTV;
     category: TCategoryType;
+    item?: TMovieItem | TItemTV;
 };
 
-const MovieCard: FC<MovieCardProps> = ({ tvItem, movieItem, category }) => {
+const MovieCard: FC<MovieCardProps> = ({ tvItem, movieItem, category, item }) => {
     //const item = tvItem || movieItem;
 
     const link = '/' + category + '/' + (tvItem || movieItem)?.id;
@@ -26,7 +27,6 @@ const MovieCard: FC<MovieCardProps> = ({ tvItem, movieItem, category }) => {
                 <Button onClick={onClick}>
                     <i className="bx bx-play"></i>
                 </Button>
-                {/*  <h3>{item?.title || item?.name} </h3> */}
             </div>
             {tvItem && <h3>{(tvItem || movieItem).name}</h3>}
             {movieItem && <h3>{(tvItem || movieItem).title}</h3>}
