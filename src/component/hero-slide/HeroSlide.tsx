@@ -16,7 +16,7 @@ import { observer } from 'mobx-react-lite';
 
 const HeroSlide: FC = () => {
     const { moviesStore } = useStores();
-    const { getPopularMovieList, dataPopularMovieList: dataListPopularMovies } = moviesStore;
+    const { getPopularMovieList, getMovieList, dataPopularMovieList } = moviesStore;
 
     SwiperCore.use([Autoplay]);
 
@@ -39,13 +39,13 @@ const HeroSlide: FC = () => {
     }, []);
 
     // Без этого error TS
-    if (!dataListPopularMovies) {
+    if (!dataPopularMovieList) {
         return <div>No Data</div>;
     }
 
     return (
         <div className="hero-slide">
-            {dataListPopularMovies?.case({
+            {dataPopularMovieList?.case({
                 pending: () => (
                     <div className="loader">
                         <span className="loader__text">Загрузка...</span>

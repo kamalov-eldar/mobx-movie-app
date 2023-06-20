@@ -1,5 +1,5 @@
 import { TMovieItem, TResponseMovieList, TResponseTVList } from '../api/types';
-import { makeAutoObservable, makeObservable, observable } from 'mobx';
+import { computed, makeAutoObservable, makeObservable, observable } from 'mobx';
 import { IMoviesResponseKP, TListType, TMovieKP } from '../types';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
 import { fetchData, fetchMovie } from '../api/apiKinopoisk';
@@ -14,7 +14,14 @@ class TVStore {
         makeObservable(this, {
             dataPopularTVList: observable,
             dataTopTVList: observable,
+
+            totalPagesTVList: computed,
         });
+    }
+
+    get totalPagesTVList() {
+        if (this.dataPopularTVList?.state === 'fulfilled') return this.dataPopularTVList.value.total_pages;
+        return 0;
     }
 
     getPopularTVList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {

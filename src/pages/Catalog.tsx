@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import PageHeader from '../component/page-header/PageHeader';
 import MovieGrid from '../component/movie-grid/MovieGrid';
 import { TCategoryType } from '../types';
+import { observer } from 'mobx-react-lite';
 
 const Catalog = () => {
     const { category: categoryUrl } = useParams<{ category: TCategoryType }>();
@@ -19,4 +20,4 @@ const Catalog = () => {
     );
 };
 
-export default Catalog;
+export default observer(Catalog);

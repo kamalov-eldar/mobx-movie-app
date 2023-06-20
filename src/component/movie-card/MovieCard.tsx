@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Button from '../button/Button';
 import { TCategoryType } from '../../types';
 import { TItemTV, TMovieItem } from '../../api/types';
+import { observer } from 'mobx-react';
 
 type MovieCardProps = {
     movieItem?: TMovieItem;
@@ -34,4 +35,4 @@ const MovieCard: FC<MovieCardProps> = ({ tvItem, movieItem, category, item }) =>
     );
 };
 
-export default MovieCard;
+export default observer(MovieCard);

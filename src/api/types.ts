@@ -47,6 +47,7 @@ export type TResponseVideo = {
 
 export interface TResponseMovieList {
     results: TMovieItem[];
+    total_pages: number;
 }
 export interface TResponseVideosList {
     results: TResponseVideo[];
@@ -55,4 +56,5 @@ export interface TResponseVideosList {
 export interface TResponseTVList {
     results: TItemTV[];
     page: number;
+    total_pages: number;
 }
