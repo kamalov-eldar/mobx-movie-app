@@ -10,16 +10,16 @@ import { observer } from 'mobx-react';
 type MovieCardProps = {
     movieItem?: TMovieItem;
     tvItem?: TItemTV;
-    category: TCategoryType;
     item?: TMovieItem | TItemTV;
+    category: TCategoryType;
 };
 
 const MovieCard: FC<MovieCardProps> = ({ tvItem, movieItem, category, item }) => {
-    //const item = tvItem || movieItem;
 
     const link = '/' + category + '/' + (tvItem || movieItem)?.id;
 
     const bg = apiConfig.w500Image((tvItem || movieItem)!.poster_path || (tvItem || movieItem)!.backdrop_path);
+
     const onClick = () => {};
 
     return (

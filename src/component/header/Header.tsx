@@ -12,7 +12,7 @@ const headerNav = [
         path: '/',
     },
     {
-        display: 'Movies',
+        display: 'Upcoming Movies',
         path: '/movie',
     },
     {
@@ -27,10 +27,7 @@ const Header = () => {
     const active = headerNav.findIndex((e) => e.path === pathname);
     useEffect(() => {
         const shrinkHeader = () => {
-            if (
-                document.body.scrollTop > 100 ||
-                document.documentElement.scrollTop > 100
-            ) {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
                 headerRef.current?.classList.add('shrink');
             } else {
                 headerRef.current?.classList.remove('shrink');
@@ -53,16 +50,12 @@ const Header = () => {
                 </div>
                 <ul className="header__nav">
                     {headerNav.map((e, i) => (
-                        <li
-                            key={i}
-                            className={`${i === active ? 'active' : ''}`}
-                        >
+                        <li key={i} className={`${i === active ? 'active' : ''}`}>
                             <Link to={e.path}>{e.display}</Link>
                         </li>
                     ))}
                 </ul>
             </div>
-            Header
         </div>
     );
 };

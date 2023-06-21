@@ -45,12 +45,10 @@ const MovieList: FC<MovieListProps> = ({ category, listType }) => {
 
     const params = { page: 1, language: 'ru-RU' };
 
-    // Без этого error TS
     /*  if (!dataPopularMovieList) {
         return <div>No Data</div>;
     } */
 
-    // Без этого error TS
     /* if (!dataTopMovieList) {
         return <div>No Data</div>;
     } */

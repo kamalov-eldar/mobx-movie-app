@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 import './PageHeader.scss';
 
 import bg from '../../assets/footer-bg.jpg';
-import { type } from 'os';
 
 type PageHeaderProps = {
     children: string;

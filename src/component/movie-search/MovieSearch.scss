@@ -1,0 +1,41 @@
+@use '../../scss/' as *;
+
+.movie-search {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+
+    input {
+        width: 100%;
+        padding-right: 8rem;
+    }
+
+    button {
+        position: absolute;
+        right: 0;
+        top: 2px;
+
+        @include mobile {
+            right: 1px;
+            top: 1px;
+        }
+    }
+    .btn.small {
+        background: #ff0000;
+        padding: 7px 24px;
+        top: -1px;
+    }
+}
+
+input {
+    border: 0;
+    background-color: #161f27;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    border-radius: $border-radius;
+    color: $txt-color;
+    font-family: $font-family;
+    &:focus {
+        box-shadow: 0 0 0 2px #ff0000; //  #0096bfab;
+    }
+}

@@ -1,55 +1,100 @@
-import { TMovieItem, TResponseMovieList } from './../api/types';
-import { computed, makeAutoObservable, makeObservable, observable } from 'mobx';
-import { IMoviesResponseKP, TListType, TMovieKP } from '../types';
+import { TMovieDetail, TMovieItem, TResponseMovieDetail, TResponseMovieList } from './../api/types';
+import { action, computed, makeAutoObservable, makeObservable, observable } from 'mobx';
+import { IMoviesResponseKP, TCategoryType, TListType, TMovieKP } from '../types';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
 import { fetchData, fetchMovie } from '../api/apiKinopoisk';
 import tmdbApi from '../api/tmdbApi';
 import { AxiosRequestConfig } from 'axios';
 
+export type TParams = {
+    page: number;
+    language: string;
+};
 class MoviesStore {
     dataPopularMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataTopMovieList?: IPromiseBasedObservable<TResponseMovieList>;
-    dataFutureMovieList?: IPromiseBasedObservable<TResponseMovieList>;
-
-    //dataFutureMovieList = fromPromise(tmdbApi.getMovieList('upcoming', { page: 1, language: 'ru-RU' } as any));
 
     /*******/
     upcomingMovieList: TMovieItem[] = [];
-    totalPagesMovieList: number = 0;
+    totalPagesUpcomingMovieList: number = 0;
+
+    /**  search **/
+    keyword: string = '';
+
+    /*   detail   */
+    movieDetail?: TMovieDetail;
+    dataMovieDetail?: IPromiseBasedObservable<TMovieDetail>;
 
     constructor() {
         makeObservable(this, {
             dataPopularMovieList: observable,
             dataTopMovieList: observable,
             upcomingMovieList: observable,
-            totalPagesMovieList: observable,
+            totalPagesUpcomingMovieList: observable,
+            keyword: observable,
+            movieDetail: observable,
+            dataMovieDetail: observable,
 
-            // totalPagesMovieList: computed,
+            setKeyword: action,
+            getMovieDetails: action,
+            resetMovieDetails: action,
         });
     }
 
-    /*  get totalPagesMovieList() {
-        if (this.dataFutureMovieList?.state === 'fulfilled') return this.dataFutureMovieList.value.total_pages;
-        return 0;
-    } */
+    setKeyword = (value: string) => {
+        this.keyword = value;
+    };
 
     getPopularMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
-        this.dataPopularMovieList = fromPromise(tmdbApi.getMovieList(listType, params).then((data) => data));
+        this.dataPopularMovieList = fromPromise(
+            tmdbApi.getMovieList(listType, params).then((data) => {
+                return data;
+            }),
+        );
     };
 
-    getMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
-        //this.dataMovieList = tmdbApi.getMovieList(listType, params).then((data) => data.results);
-    };
     getTopMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
         this.dataTopMovieList = fromPromise(tmdbApi.getMovieList(listType, params).then((data) => data));
     };
 
     getUpcomingMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
         tmdbApi.getMovieList(listType, params).then((data) => {
-            //this.dataFutureMovieList?.value.data.results
-            this.upcomingMovieList.push(...data.results);
-            this.totalPagesMovieList = data.total_pages;
+            const { page } = params?.params;
+            if (page === 1) {
+                this.upcomingMovieList = data.results;
+            } else {
+                this.upcomingMovieList.push(...data.results);
+            }
+            this.totalPagesUpcomingMovieList = data.total_pages;
         });
+    };
+
+    searchByKeyword = (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
+        tmdbApi.searchByKeyword(category, params);
+    };
+
+    searchMovie = (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
+        tmdbApi.search(category, params).then((data) => {
+            const { page } = params?.params;
+            if (page === 1) {
+                this.upcomingMovieList = data.results;
+            } else {
+                this.upcomingMovieList.push(...data.results);
+            }
+            this.totalPagesUpcomingMovieList = data.total_pages;
+        });
+    };
+
+    getMovieDetails = (category: TCategoryType, id: number, params: AxiosRequestConfig<any> | undefined) => {
+        this.dataMovieDetail = fromPromise(
+            tmdbApi.detail(category, id, params).then((data) => {
+                this.movieDetail = data;
+                return data;
+            }),
+        );
+    };
+    resetMovieDetails = () => {
+        this.movieDetail = undefined;
     };
 }
 

@@ -15,6 +15,27 @@ export type TMovieItem = {
     vote_count: number;
 };
 
+export type Genre = {
+    name: string;
+};
+
+export type TMovieDetail = {
+    adult: boolean;
+    backdrop_path: string;
+    genres: Array<Genre>;
+    id: number;
+    original_language: string;
+    original_title: string;
+    overview: string;
+    popularity: number;
+    poster_path: string;
+    release_date: string;
+    title: string;
+    video: false;
+    vote_average: number;
+    vote_count: number;
+};
+
 export type TItemTV = {
     title: string;
     backdrop_path: string;
@@ -48,6 +69,9 @@ export type TResponseVideo = {
 export interface TResponseMovieList {
     results: TMovieItem[];
     total_pages: number;
+}
+export interface TResponseMovieDetail {
+    result: TMovieDetail;
 }
 export interface TResponseVideosList {
     results: TResponseVideo[];

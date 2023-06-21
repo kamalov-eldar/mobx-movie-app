@@ -16,7 +16,7 @@ import { observer } from 'mobx-react-lite';
 
 const HeroSlide: FC = () => {
     const { moviesStore } = useStores();
-    const { getPopularMovieList, getMovieList, dataPopularMovieList } = moviesStore;
+    const { getPopularMovieList, dataPopularMovieList } = moviesStore;
 
     SwiperCore.use([Autoplay]);
 
@@ -38,7 +38,6 @@ const HeroSlide: FC = () => {
         getMovies(); */
     }, []);
 
-    // Без этого error TS
     if (!dataPopularMovieList) {
         return <div>No Data</div>;
     }

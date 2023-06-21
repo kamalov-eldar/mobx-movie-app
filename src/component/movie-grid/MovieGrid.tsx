@@ -1,97 +1,90 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import './MovieGrid.scss';
 import { useStores } from '../../root-store-context';
 import MovieCard from '../movie-card/MovieCard';
 import { TCategoryType } from '../../types';
 import { observer } from 'mobx-react';
 import { OutlineButton } from '../button/Button';
+import MovieSearch from '../movie-search/MovieSearch';
 
 type MovieGridProps = {
     category: TCategoryType;
 };
 
 const MovieGrid: FC<MovieGridProps> = ({ category }) => {
-    console.log('category: ', category);
-
     const [items, setItems] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
 
     const { moviesStore, tvStore } = useStores();
 
-    const {
-        dataPopularMovieList,
-        dataTopMovieList,
-        dataFutureMovieList,
-        getPopularMovieList,
-        getTopMovieList,
-        getUpcomingMovieList,
-        totalPagesMovieList,
-        upcomingMovieList,
-    } = moviesStore;
-    const { dataTopTVList, dataPopularTVList, getPopularTVList, getTopTVList } = tvStore;
+    const { getUpcomingMovieList, totalPagesUpcomingMovieList, upcomingMovieList, keyword, searchMovie } = moviesStore;
+
+    const { popularTVListLoadMore, totalPagesTVList, getPopularTVListLoadMore } = tvStore;
 
     useEffect(() => {
-        const params = { page: 1, language: 'ru-RU' };
-        //                     getPopularMovieList(listType, { params });
-        getUpcomingMovieList('upcoming', { params });
-    }, []);
+        if (keyword === '') {
+            const params = { page: 1, language: 'ru-RU' };
+            if (category === 'tv') getPopularTVListLoadMore('popular', { params });
+            if (category === 'movie') getUpcomingMovieList('upcoming', { params });
+        } else {
+            const params = {
+                page: 1,
+                query: keyword,
+            };
+            searchMovie(category, { params });
+        }
 
-    const loadMore = (numberPage: number) => {
-        const params = {
-            page: numberPage,
-            language: 'ru-RU',
+        return function cleanup() {
+            setPage(1);
         };
-        getUpcomingMovieList('upcoming', { params });
-    };
+    }, [category]);
+
+    const loadMore = useCallback(() => {
+
+        if (keyword === '') {
+            const params = {
+                page: page + 1,
+                language: 'ru-RU',
+            };
+            if (category === 'tv') getPopularTVListLoadMore('popular', { params });
+            if (category === 'movie') getUpcomingMovieList('upcoming', { params });
+        } else {
+            console.log('keyword: ', keyword);
+
+            const params = {
+                page: page + 1,
+                query: keyword,
+            };
+            searchMovie(category, { params });
+        }
+        setPage(page + 1);
+    }, [page, category, keyword]);
 
     return (
         <>
+            <div className="section mb-3">
+                <MovieSearch category={category} /*keyword={keyword} */ />
+            </div>
+
             <div className="movie-grid">
                 {category === 'movie' ? (
-                    /* dataFutureMovieList?.case({
-                          pending: () => (
-                              <div className="loader">
-                                  <span className="loader__text">Загрузка...</span>
-                              </div>
-                          ),
-                          rejected: () => <div>Error</div>,
-                          fulfilled: (data) => {
-                              return (
-                                  <>
-                                      {data.results.map((item, i) => (
-                                          <MovieCard category={category} movieItem={item} key={i} />
-                                      ))}
-                                  </>
-                              );
-                          },
-                      }) */
                     <>
                         {upcomingMovieList.map((item, i) => (
-                            <MovieCard category={category} movieItem={item} key={i} />
+                            <MovieCard category={category} movieItem={item} key={item.id} />
                         ))}
                     </>
                 ) : (
-                    dataPopularTVList?.case({
-                        pending: () => (
-                            <div className="loader">
-                                <span className="loader__text">Загрузка...</span>
-                            </div>
-                        ),
-                        rejected: () => <div>Error</div>,
-                        fulfilled: (list) => (
-                            <>
-                                {list.results.map((item, i) => (
-                                    <MovieCard category={category} tvItem={item} key={i} />
-                                ))}
-                            </>
-                        ),
-                    })
+                    <>
+                        {popularTVListLoadMore.map((item, i) => (
+                            <MovieCard category={category} tvItem={item} key={item.id} />
+                        ))}
+                    </>
                 )}
             </div>
-            {page < totalPagesMovieList ? (
+            {page < (category === 'tv' ? totalPagesTVList : totalPagesUpcomingMovieList) ? (
                 <div className="movie-grid__loadmore">
-                    <OutlineButton className="small" onClick={() => loadMore(2)}>
+                    <OutlineButton className="small" onClick={loadMore}>
                         Load more
                     </OutlineButton>
                 </div>
