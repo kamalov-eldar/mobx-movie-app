@@ -1,4 +1,4 @@
-import { TMovieDetail, TMovieItem, TResponseMovieDetail, TResponseMovieList } from './../api/types';
+import { TCast, TMovieDetail, TMovieItem, TResponseMovieDetail, TResponseMovieList, TVideo } from './../api/types';
 import { action, computed, makeAutoObservable, makeObservable, observable } from 'mobx';
 import { IMoviesResponseKP, TCategoryType, TListType, TMovieKP } from '../types';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
@@ -6,13 +6,10 @@ import { fetchData, fetchMovie } from '../api/apiKinopoisk';
 import tmdbApi from '../api/tmdbApi';
 import { AxiosRequestConfig } from 'axios';
 
-export type TParams = {
-    page: number;
-    language: string;
-};
 class MoviesStore {
     dataPopularMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataTopMovieList?: IPromiseBasedObservable<TResponseMovieList>;
+    dataSimilarMovieList?: IPromiseBasedObservable<TResponseMovieList>;
 
     /*******/
     upcomingMovieList: TMovieItem[] = [];
@@ -24,16 +21,21 @@ class MoviesStore {
     /*   detail   */
     movieDetail?: TMovieDetail;
     dataMovieDetail?: IPromiseBasedObservable<TMovieDetail>;
+     casts: TCast[] = [];
+    videos: TVideo[] = [];
 
     constructor() {
         makeObservable(this, {
             dataPopularMovieList: observable,
             dataTopMovieList: observable,
+            dataSimilarMovieList: observable,
             upcomingMovieList: observable,
             totalPagesUpcomingMovieList: observable,
             keyword: observable,
             movieDetail: observable,
             dataMovieDetail: observable,
+            casts: observable,
+            videos: observable,
 
             setKeyword: action,
             getMovieDetails: action,
@@ -45,16 +47,33 @@ class MoviesStore {
         this.keyword = value;
     };
 
-    getPopularMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
-        this.dataPopularMovieList = fromPromise(
-            tmdbApi.getMovieList(listType, params).then((data) => {
-                return data;
-            }),
-        );
-    };
+    getMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined, id?: number) => {
+        switch (listType) {
+            case 'popular':
+                this.dataPopularMovieList = fromPromise(
+                    tmdbApi.getMovieList(listType, params).then((data) => {
+                        return data;
+                    }),
+                );
+                break;
+            case 'top_rated':
+                this.dataTopMovieList = fromPromise(
+                    tmdbApi.getMovieList(listType, params).then((data) => {
+                        return data;
+                    }),
+                );
+                break;
+            case 'similar':
+                this.dataSimilarMovieList = fromPromise(
+                    tmdbApi.getMovieList(listType, params, id).then((data) => {
+                        return data;
+                    }),
+                );
+                break;
 
-    getTopMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
-        this.dataTopMovieList = fromPromise(tmdbApi.getMovieList(listType, params).then((data) => data));
+            default:
+                break;
+        }
     };
 
     getUpcomingMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
@@ -95,6 +114,23 @@ class MoviesStore {
     };
     resetMovieDetails = () => {
         this.movieDetail = undefined;
+    };
+
+    getCasts = (category: TCategoryType, id: number) => {
+        tmdbApi.credits(category, id).then((data) => {
+            this.casts = data.cast.slice(0, 5);
+            // return data;
+        });
+    };
+    resetCasts = () => {
+        this.casts = [];
+    };
+
+    getVideos = (category: TCategoryType, id: number) => {
+        tmdbApi.getVideos(category, id).then((data) => {
+            this.videos = data.results.slice(0, 2);
+            return data;
+        });
     };
 }
 

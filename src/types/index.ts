@@ -1,6 +1,6 @@
 //export type TListMovieType = 'upcoming' | 'popular' | 'top_rated';
 //export type TListTVType = 'popular' | 'on_the_air' | 'top_rated';
-export type TListType = 'popular' | 'top_rated' | 'upcoming';
+export type TListType = 'popular' | 'top_rated' | 'upcoming' | 'similar';
 export type TCategoryType = 'movie' | 'tv';
 
 export type TCategoryItem = {

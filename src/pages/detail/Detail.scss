@@ -1,5 +1,5 @@
 @use '../../scss/' as *;
-.detail {
+.loader {
     //margin-bottom: 3rem;
     height: 100vh;
     min-width: 100%;
@@ -11,7 +11,7 @@
     height: 50vh;
     position: relative;
     background-position: center;
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
 
     &::before {
@@ -32,6 +32,9 @@
         width: 100%;
         height: 100px;
         background-image: linear-gradient(to top, $body-bg, rgba($black, 0));
+    }
+    @include mobileLg {
+        background-size: cover;
     }
 }
 
@@ -93,31 +96,5 @@
                 background-color: $body-bg;
             }
         }
-    }
-}
-
-.casts {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    gap: 10px;
-
-    &__item {
-        &__img {
-            padding-top: 160px;
-            background-size: cover;
-            margin-bottom: 0.5rem;
-        }
-
-        &__name {
-            font-size: 0.8rem;
-        }
-    }
-}
-
-.video {
-    margin-bottom: 3rem;
-
-    &__title {
-        margin-bottom: 1.5rem;
     }
 }

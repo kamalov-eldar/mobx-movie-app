@@ -24,7 +24,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category }) => {
 
     useEffect(() => {
         if (keyword === '') {
-            const params = { page: 1, language: 'ru-RU' };
+            const params = { page: 1,  };
             if (category === 'tv') getPopularTVListLoadMore('popular', { params });
             if (category === 'movie') getUpcomingMovieList('upcoming', { params });
         } else {
@@ -41,11 +41,9 @@ const MovieGrid: FC<MovieGridProps> = ({ category }) => {
     }, [category]);
 
     const loadMore = useCallback(() => {
-
         if (keyword === '') {
             const params = {
                 page: page + 1,
-                language: 'ru-RU',
             };
             if (category === 'tv') getPopularTVListLoadMore('popular', { params });
             if (category === 'movie') getUpcomingMovieList('upcoming', { params });

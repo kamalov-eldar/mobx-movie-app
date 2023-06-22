@@ -16,27 +16,9 @@ import { observer } from 'mobx-react-lite';
 
 const HeroSlide: FC = () => {
     const { moviesStore } = useStores();
-    const { getPopularMovieList, dataPopularMovieList } = moviesStore;
+    const { dataPopularMovieList, getMovieList } = moviesStore;
 
     SwiperCore.use([Autoplay]);
-
-    useEffect(() => {
-        const params = { page: 1, language: 'ru-RU' };
-        //getMovieList('popular', { params });
-
-        /*  const getMovies = async () => {
-            // const params = { page: 1 };
-            const params = { language: 'en-US', page: 1 }; // language: 'en-US',
-            try {
-                const response = await tmdbApi.getMoviesList('popular', { params });
-                // console.log('response: ', response.results);
-                setMovieItems(response.results.slice(1, 5));
-            } catch (error) {
-                console.log('error: ', error);
-            }
-        };
-        getMovies(); */
-    }, []);
 
     if (!dataPopularMovieList) {
         return <div>No Data</div>;

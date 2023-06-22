@@ -33,15 +33,19 @@ class TVStore {
         return [];
     }
 
-    getPopularTVList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
-        this.dataPopularTVList = fromPromise(tmdbApi.getTvList(listType, params).then((data) => data));
-    };
+    getTVList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
+        switch (listType) {
+            case 'popular':
+                this.dataPopularTVList = fromPromise(tmdbApi.getTvList(listType, params).then((data) => data));
 
-    getTopTVList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
-        this.dataTopTVList = fromPromise(tmdbApi.getTvList(listType, params).then((data) => data));
+                break;
+            case 'top_rated':
+                this.dataTopTVList = fromPromise(tmdbApi.getTvList(listType, params).then((data) => data));
+                break;
+            default:
+                break;
+        }
     };
-
-    ////////////////////
 
     getPopularTVListLoadMore = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
         this.dataPopularTVList = fromPromise(

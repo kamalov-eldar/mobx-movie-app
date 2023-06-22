@@ -12,38 +12,27 @@ import MovieCard from '../movie-card/MovieCard';
 type MovieListProps = {
     category: TCategoryType;
     listType: TListType;
+    id?: number;
 };
 
-const MovieList: FC<MovieListProps> = ({ category, listType }) => {
-    /*  console.log('listType: ', listType);
-    console.log('category: ', category); */
+const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
     const { moviesStore, tvStore } = useStores();
-    const { dataPopularMovieList, dataTopMovieList, getPopularMovieList, getTopMovieList } = moviesStore;
-    const { dataTopTVList, dataPopularTVList, getPopularTVList, getTopTVList } = tvStore;
+    const { dataPopularMovieList, dataTopMovieList, dataSimilarMovieList, getMovieList } = moviesStore;
+    const { dataTopTVList, dataPopularTVList, getTVList } = tvStore;
 
     useEffect(() => {
+        const params = { page: 1, };
+
         switch (category) {
             case 'movie':
-                if (listType === 'popular') {
-                    getPopularMovieList(listType, { params });
-                }
-                if (listType === 'top_rated') {
-                    getTopMovieList(listType, { params });
-                }
+                getMovieList(listType, { params }, id);
                 break;
 
             case 'tv':
-                if (listType === 'popular') {
-                    getPopularTVList(listType, { params });
-                }
-                if (listType === 'top_rated') {
-                    getTopTVList(listType, { params });
-                }
+                getTVList(listType, { params });
                 break;
         }
-    }, []);
-
-    const params = { page: 1, language: 'ru-RU' };
+    }, [category, listType, id]);
 
     /*  if (!dataPopularMovieList) {
         return <div>No Data</div>;
@@ -90,6 +79,32 @@ const MovieList: FC<MovieListProps> = ({ category, listType }) => {
                                 </div>
                             ),
                             rejected: () => <div>Error</div>,
+                            fulfilled: (list) => (
+                                <>
+                                    <Swiper
+                                        // modules={[Autoplay]}
+                                        grabCursor={true}
+                                        spaceBetween={10}
+                                        slidesPerView={'auto'}
+                                        // autoplay={{ delay: 3000 }}
+                                    >
+                                        {list.results.map((item, i) => (
+                                            <SwiperSlide key={i}>
+                                                <MovieCard movieItem={item} category={category} />
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </>
+                            ),
+                        })) ||
+                    (listType === 'similar' &&
+                        dataSimilarMovieList?.case({
+                            pending: () => (
+                                <div className="loader">
+                                    <span className="loader__text">Загрузка...</span>
+                                </div>
+                            ),
+                            rejected: () => <div className="loader">Error</div>,
                             fulfilled: (list) => (
                                 <>
                                     <Swiper

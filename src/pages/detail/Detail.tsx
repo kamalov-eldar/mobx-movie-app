@@ -7,11 +7,12 @@ import { useStores } from '../../root-store-context';
 import apiConfig from '../../api/apiConfig';
 import { observer } from 'mobx-react';
 import { TMovieDetail } from '../../api/types';
+import CastList from '../../component/cast-list/CastList';
+import VideoList from '../../component/video-list/VideoList';
+import MovieList from '../../component/movie-list/MovieList';
 
 const Detail = () => {
     const { category, id } = useParams<{ category?: TCategoryType; id?: string }>();
-    //console.log('category: ', category);
-    //console.log('id: ', id);
 
     const { moviesStore, tvStore } = useStores();
     const { getMovieDetails, dataMovieDetail, movieDetail, resetMovieDetails } = moviesStore;
@@ -19,28 +20,26 @@ const Detail = () => {
 
     useEffect(() => {
         if (category && id) {
-            getMovieDetails(category, Number(id), { params: { language: 'ru-RU' } });
+            getMovieDetails(category, Number(id), { params: {  } });
         }
         return () => {
-            console.log('cleanup');
             resetMovieDetails();
-            console.log('cleanup-movieDetail: ', movieDetail);
         };
     }, [category, id]);
 
     if (!dataMovieDetail) {
-        return <div className="detail">No Data</div>;
+        return <div className="loader">No Data</div>;
     }
 
     return (
-        <div className="detail">
+        <>
             {dataMovieDetail?.case({
                 pending: () => (
                     <div className="loader">
                         <span className="loader__text">Загрузка...</span>
                     </div>
                 ),
-                rejected: () => <div>Error</div>,
+                rejected: () => <div className="loader">Error</div>,
                 fulfilled: () => {
                     return (
                         <>
@@ -80,17 +79,19 @@ const Detail = () => {
                                                 <div className="section__header">
                                                     <h2>Casts</h2>
                                                 </div>
-                                                {/*  <CastList id={movieDetail.id} /> */}
+                                                <CastList id={movieDetail.id} category={category!} />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="container">
-                                        <div className="section mb-3">{/* <VideoList id={movieDetail.id} /> */}</div>
+                                        <div className="section mb-3">
+                                            <VideoList id={movieDetail.id} category={category!} />
+                                        </div>
                                         <div className="section mb-3">
                                             <div className="section__header mb-2">
                                                 <h2>Similar</h2>
                                             </div>
-                                            {/*  <MovieList category={category} type="similar" id={movieDetail.id} />*/}
+                                            <MovieList category={category!} listType="similar" id={movieDetail.id} />
                                         </div>
                                     </div>
                                 </>
@@ -99,7 +100,7 @@ const Detail = () => {
                     );
                 },
             })}
-        </div>
+        </>
     );
 };
 

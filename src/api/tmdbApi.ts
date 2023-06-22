@@ -1,13 +1,19 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import axiosClient from './axiosClient';
 import { TCategoryType, TListType } from '../types';
-import { TMovieDetail, TResponseMovieDetail, TResponseMovieList, TResponseTVList, TResponseVideosList } from './types';
-import { TParams } from '../store/movies-store';
+import {
+    TMovieDetail,
+    TResponseCastsList,
+    TResponseMovieDetail,
+    TResponseMovieList,
+    TResponseTVList,
+    TResponseVideosList,
+} from './types';
 
 const tmdbApi = {
     // https://api.themoviedb.org/3/movie/{'upcoming' | 'popular' | 'top_rated'}
-    getMovieList: (listType: TListType, params: AxiosRequestConfig<TParams> | undefined) => {
-        const url = 'movie/' + listType;
+    getMovieList: (listType: TListType, params: AxiosRequestConfig<any> | undefined, id?: number) => {
+        const url = 'movie/' + (id ? `${id}/` : '') + listType;
         return axiosClient.get<never, TResponseMovieList>(url, params);
     },
     // https://api.themoviedb.org/3/tv/{'popular' | 'on_the_air' | 'top_rated'}
@@ -36,12 +42,13 @@ const tmdbApi = {
     },
     credits: (category: TCategoryType, id: number) => {
         const url = category + '/' + id + '/credits';
-        return axiosClient.get(url, { params: {} });
+        return axiosClient.get<never, TResponseCastsList>(url, { params: {} });
     },
-    similar: (category: TCategoryType, id: number) => {
+    // https://api.themoviedb.org/3/movie/id/similar
+    /* similar: (category: TCategoryType, id: number) => {
         const url = category + '/' + id + '/similar';
         return axiosClient.get(url, { params: {} });
-    },
+    }, */
 };
 
 export default tmdbApi;
