@@ -12,7 +12,7 @@ const headerNav = [
         path: '/',
     },
     {
-        display: 'Upcoming Movies',
+        display: 'Await films',
         path: '/movie',
     },
     {

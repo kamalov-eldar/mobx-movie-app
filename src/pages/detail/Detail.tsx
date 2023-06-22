@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { TCategoryType } from '../../types';
+import { TCategoryType } from '../../api/types';
 
 import './Detail.scss';
 import { useStores } from '../../root-store-context';

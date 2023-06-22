@@ -20,8 +20,12 @@ const HeroSlide: FC = () => {
 
     SwiperCore.use([Autoplay]);
 
+    useEffect(() => {
+        getMovieList('popular', { params: { page: 1 } });
+    }, []);
+
     if (!dataPopularMovieList) {
-        return <div>No Data</div>;
+        return <div className="loader">No Data</div>;
     }
 
     return (
@@ -32,7 +36,7 @@ const HeroSlide: FC = () => {
                         <span className="loader__text">Загрузка...</span>
                     </div>
                 ),
-                rejected: () => <div>Error</div>,
+                rejected: () => <div className="loader">Error</div>,
                 fulfilled: (movieList) => (
                     <>
                         <Swiper

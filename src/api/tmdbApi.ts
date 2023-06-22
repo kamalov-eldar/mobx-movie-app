@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import axiosClient from './axiosClient';
-import { TCategoryType, TListType } from '../types';
 import {
+    TCategoryType,
+    TListType,
     TMovieDetail,
     TResponseCastsList,
     TResponseMovieDetail,

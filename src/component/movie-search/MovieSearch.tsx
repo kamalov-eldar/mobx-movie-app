@@ -3,8 +3,8 @@ import { useStores } from '../../root-store-context';
 import './MovieSearch.scss';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
-import { TCategoryType } from '../../types';
 import Button from '../button/Button';
+import { TCategoryType } from '../../api/types';
 
 type MovieSearchProps = {
     category: TCategoryType;

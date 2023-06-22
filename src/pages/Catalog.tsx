@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import PageHeader from '../component/page-header/PageHeader';
 import MovieGrid from '../component/movie-grid/MovieGrid';
-import { TCategoryType } from '../types';
+import { TCategoryType } from '../api/types';
 
 const Catalog = () => {
     const { category: categoryUrl } = useParams<{ category: TCategoryType }>();

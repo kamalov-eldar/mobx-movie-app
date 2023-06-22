@@ -1,6 +1,6 @@
 import { TItemTV, TMovieItem, TResponseMovieList, TResponseTVList } from '../api/types';
 import { computed, makeAutoObservable, makeObservable, observable } from 'mobx';
-import { IMoviesResponseKP, TListType, TMovieKP } from '../types';
+import { TListType } from '../api/types';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
 import { fetchData, fetchMovie } from '../api/apiKinopoisk';
 import tmdbApi from '../api/tmdbApi';

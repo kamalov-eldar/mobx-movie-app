@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import './CastList.scss';
 import { useParams } from 'react-router-dom';
-import { TCategoryItem, TCategoryType } from '../../types';
+import { TCategoryItem, TCategoryType } from '../../api/types';
 import apiConfig from '../../api/apiConfig';
 import { useStores } from '../../root-store-context';
 import { observer } from 'mobx-react';

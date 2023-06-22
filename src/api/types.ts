@@ -1,3 +1,35 @@
+export type TListType = 'popular' | 'top_rated' | 'upcoming' | 'similar';
+export type TCategoryType = 'movie' | 'tv';
+export type TypeList = 'TOP_100_POPULAR_FILMS' | 'TOP_AWAIT_FILMS' | 'TOP_250_BEST_FILMS';
+export type TCategoryItem = {
+    title: string;
+    category: TCategoryType;
+    listType: TListType;
+};
+
+export type TGenre = {
+    genre: string;
+};
+
+export type TMovie = {
+    filmId: number;
+    filmLength: string;
+    nameEn: string;
+    nameRu: string;
+    bigPosterUrl: string;
+    posterUrlPreview: string;
+    rating: string;
+    year: string;
+    genres: TGenre[];
+};
+
+export type TMovieListResponse = {
+    data: {
+        films: TMovie[];
+        pagesCount: number;
+    };
+};
+
 export type TMovieItem = {
     adult: boolean;
     backdrop_path: string;
