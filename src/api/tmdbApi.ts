@@ -17,6 +17,11 @@ const tmdbApi = {
         const url = 'movie/' + (id ? `${id}/` : '') + listType;
         return axiosClient.get<never, TResponseMovieList>(url, params);
     },
+    getUpcomingMovieList: (params: AxiosRequestConfig<any> | undefined) => {
+        const url = 'https://api.themoviedb.org/3/movie/upcoming';
+        return axiosClient.get<never, TResponseMovieList>(url, params);
+    },
+   
     // https://api.themoviedb.org/3/tv/{'popular' | 'on_the_air' | 'top_rated'}
     getTvList: (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
         const url = 'tv/' + listType;

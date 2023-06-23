@@ -9,7 +9,9 @@ const Catalog = () => {
 
     return (
         <>
-            <PageHeader>{categoryUrl === 'movie' ? 'Upcoming Movies' : 'TV Series'}</PageHeader>
+            <PageHeader>
+                {(categoryUrl === 'movie' ? 'Coming Soon Movies ' : 'TV Series ') + String(new Date().getFullYear())}
+            </PageHeader>
             <div className="container">
                 <div className="section mb-3">
                     <MovieGrid category={categoryUrl} />

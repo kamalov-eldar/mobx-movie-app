@@ -1,30 +1,38 @@
 import {
     TCast,
     TCategoryType,
+    TImdbComingSoonListResponse,
     TListType,
-    TMovie,
+    TMovieKP,
     TMovieDetail,
     TMovieItem,
     TMovieListResponse,
     TResponseMovieDetail,
     TResponseMovieList,
     TVideo,
+    TMovie,
+    TIMDbMovie,
 } from './../api/types';
+import { AxiosRequestConfig } from 'axios';
 import { action, computed, makeAutoObservable, makeObservable, observable } from 'mobx';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
-import kpApi, { fetchData, fetchMovie } from '../api/apiKinopoisk';
+import kpApi from '../api/apiKinopoisk';
 import tmdbApi from '../api/tmdbApi';
-import { AxiosRequestConfig } from 'axios';
+import IMDbApi from '../api/IMDbApi';
 
 class MoviesStore {
     dataTop100MovieList?: IPromiseBasedObservable<TMovieListResponse>;
+    top100MovieList: TMovie[] = [];
     dataBestMoviesList?: IPromiseBasedObservable<TMovieListResponse>;
-    dataAwaitMoviesList?: IPromiseBasedObservable<TMovieListResponse>;
 
     dataPopularMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataTopMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataSimilarMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataUpcomingMovieList?: IPromiseBasedObservable<TResponseMovieList>;
+
+    /** IMDb */
+    dataImdbComingSoonList?: IPromiseBasedObservable<TImdbComingSoonListResponse>;
+    imdbComingSoonList: TMovie[] = [];
 
     /*******/
     upcomingMovieList: TMovieItem[] = [];
@@ -41,12 +49,17 @@ class MoviesStore {
 
     constructor() {
         makeObservable(this, {
+            /** KP */
             dataTop100MovieList: observable,
+            top100MovieList: observable,
             dataBestMoviesList: observable,
-            dataAwaitMoviesList: observable,
-            dataUpcomingMovieList: observable,
+
+            /**IMDb */
+            dataImdbComingSoonList: observable,
+            imdbComingSoonList: observable,
 
             /**tmdb**/
+            dataUpcomingMovieList: observable,
             dataPopularMovieList: observable,
             dataTopMovieList: observable,
             dataSimilarMovieList: observable,
@@ -68,12 +81,19 @@ class MoviesStore {
     getTop100 = () => {
         this.dataTop100MovieList = fromPromise(
             kpApi.getMovieList('TOP_100_POPULAR_FILMS', 1).then((data) => {
-                // console.log('data: ', data);
+                this.top100MovieList = data.data.films.map((item) => {
+                    const movie: TMovie = {
+                        id: item.filmId,
+                        name: item.nameEn,
+                        image: item.posterUrlPreview,
+                    };
+                    return movie;
+                });
                 return data;
             }),
         );
     };
-    getBestFilms = () => {
+    get250BestFilms = () => {
         this.dataBestMoviesList = fromPromise(
             kpApi.getMovieList('TOP_250_BEST_FILMS', 1).then((data) => {
                 // console.log('data: ', data);
@@ -81,10 +101,20 @@ class MoviesStore {
             }),
         );
     };
-    getAwaitFilms = () => {
-        this.dataAwaitMoviesList = fromPromise(
-            kpApi.getMovieList('TOP_AWAIT_FILMS', 1).then((data) => {
-                // console.log('data: ', data);
+
+    getImdbComingSoonList = () => {
+        this.dataImdbComingSoonList = fromPromise(
+            IMDbApi.imdbComingSoon().then((data) => {
+                this.imdbComingSoonList = data.data.items
+                    .filter((data) => data.year === String(new Date().getFullYear()))
+                    .map((item) => {
+                        const movie: TMovie = {
+                            id: item.id,
+                            name: item.fullTitle,
+                            image: item.image,
+                        };
+                        return movie;
+                    });
                 return data;
             }),
         );
@@ -125,9 +155,11 @@ class MoviesStore {
         }
     };
 
-    getUpcomingMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
+    getUpcomingMovieList = (params: AxiosRequestConfig<any> | undefined) => {
         this.dataUpcomingMovieList = fromPromise(
-            tmdbApi.getMovieList(listType, params).then((data) => {
+            tmdbApi.getUpcomingMovieList(params).then((data) => {
+                console.log('data: ', data);
+
                 const { page } = params?.params;
                 if (page === 1) {
                     this.upcomingMovieList = data.results;

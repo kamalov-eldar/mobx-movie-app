@@ -12,6 +12,12 @@ export type TGenre = {
 };
 
 export type TMovie = {
+    id: number;
+    name: string;
+    image: string;
+};
+
+export type TMovieKP = {
     filmId: number;
     filmLength: string;
     nameEn: string;
@@ -22,11 +28,26 @@ export type TMovie = {
     year: string;
     genres: TGenre[];
 };
+export type TIMDbMovie = {
+    id: number;
+    fullTitle: string;
+    image: string;
+    title: string;
+    year: string;
+    starList: Array<{ id: null; name: string }>;
+    genreList: Array<{ key: string; value: string }>;
+};
 
 export type TMovieListResponse = {
     data: {
-        films: TMovie[];
+        films: TMovieKP[];
         pagesCount: number;
+    };
+};
+
+export type TImdbComingSoonListResponse = {
+    data: {
+        items: TIMDbMovie[];
     };
 };
 

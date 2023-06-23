@@ -1,26 +1,25 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import './MovieCard.scss';
-import apiConfig from '../../api/apiConfig';
 import { Link } from 'react-router-dom';
 import Button from '../button/Button';
 import { TMovie } from '../../api/types';
 import { observer } from 'mobx-react';
 
 type MovieCardProps = {
-    movieItem: TMovie;
+    movie: TMovie;
 };
 
-const MovieCard: FC<MovieCardProps> = ({ movieItem }) => {
-    const link = '/' + 'movie' + '/' + movieItem.filmId;
+const MovieCard: FC<MovieCardProps> = ({ movie }) => {
+    const link = '/' + 'movie' + '/' + movie.id;
 
     return (
         <Link to={link}>
-            <div className="movie-card" style={{ backgroundImage: `url(${movieItem.posterUrlPreview})` }}>
+            <div className="movie-card" style={{ backgroundImage: `url(${movie.image})` }}>
                 <Button>
                     <i className="bx bx-play"></i>
                 </Button>
             </div>
-            <h3>{movieItem.nameRu}</h3>
+            <h3>{movie.name}</h3>
         </Link>
     );
 };

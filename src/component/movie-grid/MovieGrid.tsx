@@ -19,26 +19,27 @@ const MovieGrid: FC<MovieGridProps> = ({ category }) => {
 
     const {
         getUpcomingMovieList,
+        getImdbComingSoonList,
+        imdbComingSoonList,
+        dataImdbComingSoonList,
         totalPagesUpcomingMovieList,
-
         keyword,
         searchMovie,
-        getAwaitFilms,
-        dataAwaitMoviesList,
     } = moviesStore;
 
     const { popularTVListLoadMore, totalPagesTVList, getPopularTVListLoadMore } = tvStore;
 
+
     useEffect(() => {
-        if (keyword === '') {
-            getAwaitFilms();
+        getImdbComingSoonList();
+        /*  if (keyword === '') {
         } else {
             const params = {
                 page: 1,
                 query: keyword,
             };
             searchMovie(category, { params });
-        }
+        } */
 
         return function cleanup() {
             setPage(1);
@@ -51,7 +52,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category }) => {
                 page: page + 1,
             };
             if (category === 'tv') getPopularTVListLoadMore('popular', { params });
-            if (category === 'movie') getUpcomingMovieList('upcoming', { params });
+            if (category === 'movie') getUpcomingMovieList({ params });
         } else {
             const params = {
                 page: page + 1,
@@ -62,29 +63,33 @@ const MovieGrid: FC<MovieGridProps> = ({ category }) => {
         setPage(page + 1);
     }, [page, category, keyword]);
 
+    if (!dataImdbComingSoonList) {
+        return <div className="loader">No Data</div>;
+    }
+
     return (
         <>
             <div className="section mb-3">
                 <MovieSearch category={category} /*keyword={keyword} */ />
             </div>
 
-            <div className="movie-grid">
-                {dataAwaitMoviesList?.case({
-                    pending: () => (
-                        <div className="loader">
-                            <span className="loader__text">Загрузка...</span>
-                        </div>
-                    ),
-                    rejected: () => <div className="loader">Error</div>,
-                    fulfilled: ({ data }) => (
-                        <>
-                            {data.films.map((item) => (
-                                <MovieCard movieItem={item} key={item.filmId} />
-                            ))}
-                        </>
-                    ),
-                })}
-            </div>
+            {/*  <div className="movie-grid"> */}
+            {dataImdbComingSoonList?.case({
+                pending: () => (
+                    <div className="loader">
+                        <span className="loader__text">Загрузка...</span>
+                    </div>
+                ),
+                rejected: () => <div className="loader">Error</div>,
+                fulfilled: () => (
+                    <div className="movie-grid">
+                        {imdbComingSoonList.map((item) => (
+                            <MovieCard movie={item} /* movieItem={item} */ key={item.id} />
+                        ))}
+                    </div>
+                ),
+            })}
+            {/*  </div> */}
             {page < (category === 'tv' ? totalPagesTVList : totalPagesUpcomingMovieList) ? (
                 <div className="movie-grid__loadmore">
                     <OutlineButton className="small" onClick={loadMore}>

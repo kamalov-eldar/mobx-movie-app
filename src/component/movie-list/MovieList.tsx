@@ -16,7 +16,7 @@ type MovieListProps = {
 
 const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
     const { moviesStore } = useStores();
-    const { dataTop100MovieList, getTop100 } = moviesStore;
+    const { dataTop100MovieList, top100MovieList, getTop100 } = moviesStore;
 
     useEffect(() => {
         const params = { page: 1 };
@@ -40,7 +40,7 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                     </div>
                 ),
                 rejected: () => <div className="loader">Error</div>,
-                fulfilled: ({ data }) => (
+                fulfilled: () => (
                     <Swiper
                         // modules={[Autoplay]}
                         grabCursor={true}
@@ -48,9 +48,9 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                         slidesPerView={'auto'}
                         // autoplay={{ delay: 3000 }}
                     >
-                        {data.films.map((item, i) => (
+                        {top100MovieList.map((item, i) => (
                             <SwiperSlide key={i}>
-                                <MovieCard movieItem={item} />
+                                <MovieCard movie={item} />
                             </SwiperSlide>
                         ))}
                     </Swiper>
