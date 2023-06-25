@@ -16,12 +16,12 @@ import { observer } from 'mobx-react-lite';
 
 const HeroSlide: FC = () => {
     const { moviesStore } = useStores();
-    const { dataPopularMovieList, getMovieList } = moviesStore;
+    const { dataPopularMovieList } = moviesStore;
 
     SwiperCore.use([Autoplay]);
 
     if (!dataPopularMovieList) {
-        return <div>No Data</div>;
+        return <div>No Data HeroSlide</div>;
     }
 
     return (

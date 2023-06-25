@@ -17,6 +17,7 @@ export const fetchMovie = async (movieId = 927898) =>
             'X-API-KEY': '8ccb0f71-adf6-4b8f-9927-980b4f08e9d5',
         },
     });
+    
 export const fetchUpcomingMovie = async (movieId = 927898) =>
     await axios.get(`https://yts.mx/api/v2/list_upcoming.json`, {
         headers: {

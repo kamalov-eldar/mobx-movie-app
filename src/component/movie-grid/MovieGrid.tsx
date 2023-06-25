@@ -2,31 +2,36 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import './MovieGrid.scss';
 import { useStores } from '../../root-store-context';
 import MovieCard from '../movie-card/MovieCard';
-import { TCategoryType } from '../../types';
+import { TCategoryType, TListType } from '../../types';
 import { observer } from 'mobx-react';
 import { OutlineButton } from '../button/Button';
 import MovieSearch from '../movie-search/MovieSearch';
+import { useRouteMatch } from 'react-router-dom';
 
 type MovieGridProps = {
     category: TCategoryType;
+    listType: TListType;
 };
 
-const MovieGrid: FC<MovieGridProps> = ({ category }) => {
+const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
+    console.log('listType-MovieGrid: ', listType);
+
     const [items, setItems] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
 
     const { moviesStore, tvStore } = useStores();
 
-    const { getUpcomingMovieList, totalPagesUpcomingMovieList, upcomingMovieList, keyword, searchMovie } = moviesStore;
+    const { totalPagesUpcomingMovieList, upcomingMovieList, keyword, searchMovie } = moviesStore;
 
     const { popularTVListLoadMore, totalPagesTVList, getPopularTVListLoadMore } = tvStore;
 
     useEffect(() => {
         if (keyword === '') {
-            const params = { page: 1,  };
+            const params = { page: 1 };
             if (category === 'tv') getPopularTVListLoadMore('popular', { params });
-            if (category === 'movie') getUpcomingMovieList('upcoming', { params });
+            //  if (category === 'movie') getUpcomingMovieList('upcoming', { params });
+            //if (category === 'movie') getMovieList(listType, { params });
         } else {
             const params = {
                 page: 1,
@@ -38,15 +43,17 @@ const MovieGrid: FC<MovieGridProps> = ({ category }) => {
         return function cleanup() {
             setPage(1);
         };
-    }, [category]);
+    }, [category, listType]);
 
     const loadMore = useCallback(() => {
+        console.log('loadMore: ');
         if (keyword === '') {
             const params = {
                 page: page + 1,
             };
             if (category === 'tv') getPopularTVListLoadMore('popular', { params });
-            if (category === 'movie') getUpcomingMovieList('upcoming', { params });
+            //  if (category === 'movie') getUpcomingMovieList('upcoming', { params });
+            //if (category === 'movie') getMovieList(listType, { params });
         } else {
             console.log('keyword: ', keyword);
 

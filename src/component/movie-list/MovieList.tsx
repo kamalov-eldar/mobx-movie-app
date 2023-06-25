@@ -21,27 +21,20 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
     const { dataTopTVList, dataPopularTVList, getTVList } = tvStore;
 
     useEffect(() => {
-        const params = { page: 1, };
+        console.log('useEffect-MovieList: ');
+        const params = { page: 1 };
 
         switch (category) {
             case 'movie':
                 getMovieList(listType, { params }, id);
                 break;
-
             case 'tv':
-                getTVList(listType, { params });
+                // getTVList(listType, { params });
                 break;
         }
     }, [category, listType, id]);
 
-    /*  if (!dataPopularMovieList) {
-        return <div>No Data</div>;
-    } */
-
-    /* if (!dataTopMovieList) {
-        return <div>No Data</div>;
-    } */
-
+    
     return (
         <div className="movie-list">
             {category === 'movie' &&
@@ -107,19 +100,23 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                             rejected: () => <div className="loader">Error</div>,
                             fulfilled: (list) => (
                                 <>
-                                    <Swiper
-                                        // modules={[Autoplay]}
-                                        grabCursor={true}
-                                        spaceBetween={10}
-                                        slidesPerView={'auto'}
-                                        // autoplay={{ delay: 3000 }}
-                                    >
-                                        {list.results.map((item, i) => (
-                                            <SwiperSlide key={i}>
-                                                <MovieCard movieItem={item} category={category} />
-                                            </SwiperSlide>
-                                        ))}
-                                    </Swiper>
+                                    {list.results.length > 0 ? (
+                                        <Swiper
+                                            // modules={[Autoplay]}
+                                            grabCursor={true}
+                                            spaceBetween={10}
+                                            slidesPerView={'auto'}
+                                            // autoplay={{ delay: 3000 }}
+                                        >
+                                            {list.results.map((item, i) => (
+                                                <SwiperSlide key={i}>
+                                                    <MovieCard movieItem={item} category={category} />
+                                                </SwiperSlide>
+                                            ))}
+                                        </Swiper>
+                                    ) : (
+                                        <div>no matches </div>
+                                    )}
                                 </>
                             ),
                         })))}

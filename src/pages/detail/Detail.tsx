@@ -20,7 +20,7 @@ const Detail = () => {
 
     useEffect(() => {
         if (category && id) {
-            getMovieDetails(category, Number(id), { params: {  } });
+            // getMovieDetails(category, Number(id), { params: {  } });
         }
         return () => {
             resetMovieDetails();
@@ -28,7 +28,7 @@ const Detail = () => {
     }, [category, id]);
 
     if (!dataMovieDetail) {
-        return <div className="loader">No Data</div>;
+        return <div className="loader">No Data Detail</div>;
     }
 
     return (

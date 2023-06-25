@@ -91,3 +91,19 @@ export interface TResponseTVList {
 export interface TResponseCastsList {
     cast: TCast[];
 }
+
+export type TIMDbMovie = {
+    id: number;
+    fullTitle: string;
+    image: string;
+    title: string;
+    year: string;
+    starList: Array<{ id: null; name: string }>;
+    genreList: Array<{ key: string; value: string }>;
+};
+
+export type TImdbComingSoonListResponse = {
+    data: {
+        items: TIMDbMovie[];
+    };
+};
