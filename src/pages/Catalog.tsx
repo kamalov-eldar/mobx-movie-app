@@ -8,7 +8,7 @@ import { useStores } from '../root-store-context';
 
 const Catalog = () => {
     const { category: categoryUrl, listType } = useParams<{ category: TCategoryType; listType: TListType }>();
-    const { pathname } = useLocation<string>();
+    const { pathname } = useLocation();
 
     const { moviesStore, tvStore } = useStores();
 

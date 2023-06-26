@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef } from 'react';
-import { RouteComponentProps, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import './Header.scss';
 import logo from '../../assets/tmovie.png';
 import { Link } from 'react-router-dom';
@@ -11,7 +11,7 @@ const headerNav = [
     },
     {
         display: 'Upcoming Movies',
-        path: '/movie/upcoming',
+        path: 'catalog/movie/upcoming',
     },
     {
         display: 'TV Series',

@@ -6,11 +6,10 @@ import { TCategoryType, TListType } from '../../types';
 import { observer } from 'mobx-react';
 import { OutlineButton } from '../button/Button';
 import MovieSearch from '../movie-search/MovieSearch';
-import { useRouteMatch } from 'react-router-dom';
 
 type MovieGridProps = {
-    category: TCategoryType;
-    listType: TListType;
+    category: TCategoryType | undefined;
+    listType: TListType | undefined;
 };
 
 const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
@@ -41,19 +40,19 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
             const params = { page: 1 };
             if (category === 'tv') getPopularTVListLoadMore('popular', { params });
             //  if (category === 'movie') getUpcomingMovieList('upcoming', { params });
-            if (category === 'movie') getMovieList(listType, { params });
+            if (category === 'movie' && listType) getMovieList(listType, { params });
         } else {
             const params = {
                 page: 1,
                 query: keyword,
             };
-            searchMovie(category, { params });
+            if (category) searchMovie(category, { params });
         }
 
         return function cleanup() {
             console.log('cleanup: ');
             setPage(1);
-            resetMoviesList(listType);
+            if (listType) resetMoviesList(listType);
         };
     }, [category, listType]);
 
@@ -64,7 +63,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
             };
             if (category === 'tv') getPopularTVListLoadMore('popular', { params });
             //  if (category === 'movie') getUpcomingMovieList('upcoming', { params });
-            if (category === 'movie') getMovieList(listType, { params });
+            if (category === 'movie' && listType) getMovieList(listType, { params });
         } else {
             console.log('keyword: ', keyword);
 
@@ -72,7 +71,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
                 page: page + 1,
                 query: keyword,
             };
-            searchMovie(category, { params });
+           if(category) searchMovie(category, { params });
         }
         setPage(page + 1);
     }, [page, category, keyword, listType]);

@@ -11,7 +11,7 @@ type MovieCardProps = {
     movieItem?: TMovieItem;
     tvItem?: TItemTV;
     item?: TMovieItem | TItemTV;
-    category: TCategoryType;
+    category: TCategoryType | undefined;
 };
 
 const MovieCard: FC<MovieCardProps> = ({ tvItem, movieItem, category, item }) => {

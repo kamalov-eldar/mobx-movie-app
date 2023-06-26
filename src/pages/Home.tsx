@@ -1,6 +1,6 @@
 import React from 'react';
 import HeroSlide from '../component/hero-slide/HeroSlide';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { OutlineButton } from '../component/button/Button';
 import MovieList from '../component/movie-list/MovieList';
 import { TCategoryItem } from '../types';
@@ -38,7 +38,7 @@ const Home = () => {
                 {categoryPage.map((item, idx) => {
                     const { category, listType, title } = item;
 
-                    const link = category + '/' + listType;
+                    const link = 'catalog/' + category + '/' + listType;
 
                     return (
                         <div key={title + idx} className="section mb-3">

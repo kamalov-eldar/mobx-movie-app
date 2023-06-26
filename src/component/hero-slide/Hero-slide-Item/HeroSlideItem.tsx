@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import apiConfig from '../../../api/apiConfig';
 import tmdbApi from '../../../api/tmdbApi';
 import { FC } from 'react';
@@ -12,7 +12,7 @@ type HeroSlideItemProps = {
 };
 
 const HeroSlideItem: FC<HeroSlideItemProps> = ({ item, className }) => {
-    let hisrory = useHistory();
+    let navigate  = useNavigate();
 
     const background = apiConfig.originalImage(item.backdrop_path ? item.backdrop_path : item.poster_path);
 
@@ -42,7 +42,7 @@ const HeroSlideItem: FC<HeroSlideItemProps> = ({ item, className }) => {
                     <h2 className="title">{item.title}</h2>
                     <div className="overview">{item.overview}</div>
                     <div className="btns">
-                        <Button onClick={() => hisrory.push('/movie/' + item.id)}>Watch now</Button>
+                        <Button onClick={() => navigate('/movie/' + item.id)}>Watch now</Button>
                         <OutlineButton onClick={setModalActive}>Watch trailer</OutlineButton>
                     </div>
                 </div>
