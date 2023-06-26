@@ -21,19 +21,23 @@ const Catalog = () => {
         },
         {
             display: 'Upcoming Movies',
-            path: '/movie/upcoming',
+            path: '/catalog/movie/upcoming',
         },
         {
             display: 'Top Rated Movies',
-            path: '/movie/top_rated',
+            path: '/catalog/movie/top_rated',
         },
         {
             display: 'Trending Movies',
-            path: '/movie/popular',
+            path: '/catalog/movie/popular',
         },
         {
-            display: 'TV Series',
-            path: '/tv',
+            display: 'TV Series Trending',
+            path: '/catalog/tv/popular',
+        },
+        {
+            display: 'Top Rated TV Series',
+            path: '/catalog/tv/top_rated',
         },
     ];
 

@@ -16,7 +16,7 @@ const MovieSearch: FC<MovieSearchProps> = ({ category }) => {
 
     const { keyword, setKeyword, searchMovie } = moviesStore;
 
-    const { popularTVListLoadMore, totalPagesTVList, getPopularTVListLoadMore } = tvStore;
+    const { popularTVList: popularTVListLoadMore, totalPagesTVList, getPopularTVListLoadMore } = tvStore;
 
     const goToSearch = useCallback(() => {
         console.log('keyword: ', keyword);

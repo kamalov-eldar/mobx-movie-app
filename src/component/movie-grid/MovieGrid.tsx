@@ -33,13 +33,12 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
         resetMoviesList,
     } = moviesStore;
 
-    const { popularTVListLoadMore, totalPagesTVList, getPopularTVListLoadMore } = tvStore;
+    const { popularTVList, totalPagesTVList, getTVList, topTVList, dataPopularTVList, dataTopTVList } = tvStore;
 
     useEffect(() => {
         if (keyword === '') {
             const params = { page: 1 };
-            if (category === 'tv') getPopularTVListLoadMore('popular', { params });
-            //  if (category === 'movie') getUpcomingMovieList('upcoming', { params });
+            if (category === 'tv') getTVList('popular', { params });
             if (category === 'movie' && listType) getMovieList(listType, { params });
         } else {
             const params = {
@@ -61,9 +60,8 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
             const params = {
                 page: page + 1,
             };
-            if (category === 'tv') getPopularTVListLoadMore('popular', { params });
-            //  if (category === 'movie') getUpcomingMovieList('upcoming', { params });
             if (category === 'movie' && listType) getMovieList(listType, { params });
+            if (category === 'tv') getTVList('popular', { params });
         } else {
             console.log('keyword: ', keyword);
 
@@ -71,15 +69,16 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
                 page: page + 1,
                 query: keyword,
             };
-           if(category) searchMovie(category, { params });
+            if (category) searchMovie(category, { params });
         }
         setPage(page + 1);
     }, [page, category, keyword, listType]);
 
-    const list = useMemo(() => {
+    const listMovie = useMemo(() => {
         switch (listType) {
             case 'popular':
                 return popularMovieList;
+            //if (category === 'tv') return popularTVList;
             case 'top_rated':
                 return topMovieList;
             case 'upcoming':
@@ -90,7 +89,19 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
         }
     }, [listType, popularMovieList, topMovieList, upcomingMovieList]);
 
-    const data = useMemo(() => {
+    const listTV = useMemo(() => {
+        switch (listType) {
+            case 'popular':
+                return popularTVList;
+            //if (category === 'tv') return popularTVList;
+            case 'top_rated':
+                return topTVList;
+            default:
+                return [];
+        }
+    }, [listType, popularTVList, topTVList]);
+
+    const dataMovie = useMemo(() => {
         switch (listType) {
             case 'popular':
                 return dataPopularMovieList;
@@ -100,19 +111,38 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
                 return dataUpcomingMovieList;
 
             default:
-                return;
+                return undefined;
         }
     }, [listType, dataPopularMovieList, dataTopMovieList, dataUpcomingMovieList]);
 
-    if (list.length === 0) {
+    const dataTVList = useMemo(() => {
+        switch (listType) {
+            case 'popular':
+                return dataPopularTVList;
+            case 'top_rated':
+                return dataTopTVList;
+
+            default:
+                return undefined;
+        }
+    }, [listType, dataPopularTVList, dataTopTVList]);
+
+    if ((dataTVList?.state || dataMovie?.state) === 'rejected') {
         return (
             <div className="loader">
-                <span className="loader__text">Загрузка MovieGrid...</span>
+                rejected MovieGrid {category}-{listType}
             </div>
         );
     }
-    if (data?.state === 'rejected') {
-        return <div className="loader">rejected MovieGrid</div>;
+
+    if ((listMovie.length === 0 && dataMovie) || (listTV.length === 0 && dataTVList)) {
+        return (
+            <div className="loader">
+                <span className="loader__text">
+                    Загрузка MovieGrid {category}-{listType}...
+                </span>
+            </div>
+        );
     }
 
     return (
@@ -134,9 +164,9 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
                     </>
                 ) : (
                     <>
-                        {popularTVListLoadMore.map((item, i) => (
-                            <MovieCard category={category} tvItem={item} key={item.id} />
-                        ))}
+                        {popularTVList.map((item, i) => {
+                            return <MovieCard category={category} tvItem={item} key={item.id} />;
+                        })}
                     </>
                 )}
             </div>

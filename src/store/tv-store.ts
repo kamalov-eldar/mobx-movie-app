@@ -11,15 +11,17 @@ class TVStore {
     dataTopTVList?: IPromiseBasedObservable<TResponseTVList>;
 
     /*****/
-    popularTVListLoadMore: TItemTV[] = [];
+    popularTVList: TItemTV[] = [];
+    topTVList: TItemTV[] = [];
 
     constructor() {
         makeObservable(this, {
             dataPopularTVList: observable,
             dataTopTVList: observable,
+            topTVList: observable,
+            popularTVList: observable,
 
             totalPagesTVList: computed,
-            topTVList: computed,
         });
     }
 
@@ -28,19 +30,35 @@ class TVStore {
         return 0;
     }
 
-    get topTVList() {
-        if (this.dataTopTVList?.state === 'fulfilled') return this.dataTopTVList.value.results;
-        return [];
-    }
+
 
     getTVList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
         switch (listType) {
             case 'popular':
-                this.dataPopularTVList = fromPromise(tmdbApi.getTvList(listType, params).then((data) => data));
-
+                this.dataPopularTVList = fromPromise(
+                    tmdbApi.getTvList(listType, params).then((data) => {
+                        const { page } = params?.params;
+                        if (page === 1) {
+                            this.popularTVList = data.results;
+                        } else {
+                            this.popularTVList.push(...data.results);
+                        }
+                        return data;
+                    }),
+                );
                 break;
             case 'top_rated':
-                this.dataTopTVList = fromPromise(tmdbApi.getTvList(listType, params).then((data) => data));
+                this.dataTopTVList = fromPromise(
+                    tmdbApi.getTvList(listType, params).then((data) => {
+                        const { page } = params?.params;
+                        if (page === 1) {
+                            this.topTVList = data.results;
+                        } else {
+                            this.topTVList.push(...data.results);
+                        }
+                        return data;
+                    }),
+                );
                 break;
             default:
                 break;
@@ -52,9 +70,9 @@ class TVStore {
             tmdbApi.getTvList(listType, params).then((data) => {
                 const { page } = params?.params;
                 if (page === 1) {
-                    this.popularTVListLoadMore = data.results;
+                    this.popularTVList = data.results;
                 } else {
-                    this.popularTVListLoadMore.push(...data.results);
+                    this.popularTVList.push(...data.results);
                 }
                 return data;
             }),

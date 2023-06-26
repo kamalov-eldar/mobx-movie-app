@@ -28,7 +28,7 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                 getMovieList(listType, { params }, id);
                 break;
             case 'tv':
-                // getTVList(listType, { params });
+                getTVList(listType, { params });
                 break;
         }
     }, [category, listType, id]);
