@@ -21,7 +21,6 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
     const { dataTopTVList, dataPopularTVList, getTVList } = tvStore;
 
     useEffect(() => {
-        console.log('useEffect-MovieList: ');
         const params = { page: 1 };
 
         switch (category) {
@@ -34,7 +33,6 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
         }
     }, [category, listType, id]);
 
-    
     return (
         <div className="movie-list">
             {category === 'movie' &&

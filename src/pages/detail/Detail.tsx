@@ -20,7 +20,7 @@ const Detail = () => {
 
     useEffect(() => {
         if (category && id) {
-            // getMovieDetails(category, Number(id), { params: {  } });
+            getMovieDetails(category, Number(id), { params: {} });
         }
         return () => {
             resetMovieDetails();
@@ -36,10 +36,10 @@ const Detail = () => {
             {dataMovieDetail?.case({
                 pending: () => (
                     <div className="loader">
-                        <span className="loader__text">Загрузка...</span>
+                        <span className="loader__text">Detail Загрузка...</span>
                     </div>
                 ),
-                rejected: () => <div className="loader">Error</div>,
+                rejected: () => <div className="loader">Error Detail</div>,
                 fulfilled: () => {
                     return (
                         <>

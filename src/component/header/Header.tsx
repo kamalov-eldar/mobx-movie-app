@@ -4,8 +4,6 @@ import './Header.scss';
 import logo from '../../assets/tmovie.png';
 import { Link } from 'react-router-dom';
 
-type HeaderProps = {};
-
 const headerNav = [
     {
         display: 'Home',
@@ -13,7 +11,7 @@ const headerNav = [
     },
     {
         display: 'Upcoming Movies',
-        path: '/movie',
+        path: '/movie/upcoming',
     },
     {
         display: 'TV Series',

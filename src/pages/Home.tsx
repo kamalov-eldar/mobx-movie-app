@@ -38,7 +38,7 @@ const Home = () => {
                 {categoryPage.map((item, idx) => {
                     const { category, listType, title } = item;
 
-                    const link = '/category/' + category + '/list/' + listType;
+                    const link = category + '/' + listType;
 
                     return (
                         <div key={title + idx} className="section mb-3">

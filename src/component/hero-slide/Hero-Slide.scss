@@ -6,6 +6,15 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    @include tablet {
+        height: 50vh;
+    }
+    .swiper {
+        height: 100vh;
+        @include tablet {
+            height: 50vh;
+        }
+    }
 }
 
 .hero-slide__item {
