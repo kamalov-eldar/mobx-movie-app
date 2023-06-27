@@ -1,6 +1,6 @@
-@use "./scss/" as *;
+@use './scss/' as *;
 
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap');
 
 * {
     padding: 0;
@@ -65,6 +65,24 @@ iframe {
 .container {
     max-width: 1660px;
     margin: auto;
+}
+
+.hero-slide {
+    .loader {
+        height: 100%;
+    }
+}
+
+.loader {
+    margin-bottom: 3rem;
+    height: 100vh;
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include tablet {
+        height: 50vh;
+    }
 }
 
 .mb-3 {

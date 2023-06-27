@@ -1,12 +1,5 @@
 @use '../../scss/' as *;
-.loader {
-    //margin-bottom: 3rem;
-    height: 100vh;
-    min-width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 .banner {
     height: 50vh;
     position: relative;

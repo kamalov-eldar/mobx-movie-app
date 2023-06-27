@@ -6,6 +6,7 @@ import { TCategoryType, TListType } from '../../types';
 import { observer } from 'mobx-react';
 import { OutlineButton } from '../button/Button';
 import MovieSearch from '../movie-search/MovieSearch';
+import RejectUpload from '../reject-upload/RejectUpload';
 
 type MovieGridProps = {
     category: TCategoryType | undefined;
@@ -49,7 +50,6 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
         }
 
         return function cleanup() {
-            console.log('cleanup: ');
             setPage(1);
             if (listType) resetMoviesList(listType);
         };
@@ -130,7 +130,9 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
     if ((dataTVList?.state || dataMovie?.state) === 'rejected') {
         return (
             <div className="loader">
-                rejected MovieGrid {category}-{listType}
+                <span className="loader__text">
+                rejected MovieGrid {category}-{listType}...
+                </span>
             </div>
         );
     }

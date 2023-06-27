@@ -39,11 +39,15 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                 ((listType === 'popular' &&
                     dataPopularMovieList?.case({
                         pending: () => (
-                            <div className="loader">
+                            <div>
                                 <span className="loader__text">Загрузка...</span>
                             </div>
                         ),
-                        rejected: () => <div>Error</div>,
+                        rejected: () => (
+                            <div>
+                                <span className="loader__text">Error</span>
+                            </div>
+                        ),
                         fulfilled: (list) => (
                             <>
                                 <Swiper
@@ -65,11 +69,16 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                     (listType === 'top_rated' &&
                         dataTopMovieList?.case({
                             pending: () => (
-                                <div className="loader">
+                                <div>
                                     <span className="loader__text">Загрузка...</span>
                                 </div>
                             ),
-                            rejected: () => <div>Error</div>,
+                            rejected: () => (
+                                <div>
+                                    <span className="loader__text">Error</span>
+                                </div>
+                            ),
+
                             fulfilled: (list) => (
                                 <>
                                     <Swiper
@@ -91,11 +100,15 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                     (listType === 'similar' &&
                         dataSimilarMovieList?.case({
                             pending: () => (
-                                <div className="loader">
+                                <div>
                                     <span className="loader__text">Загрузка...</span>
                                 </div>
                             ),
-                            rejected: () => <div className="loader">Error</div>,
+                            rejected: () => (
+                                <div>
+                                    <span className="loader__text">Error</span>
+                                </div>
+                            ),
                             fulfilled: (list) => (
                                 <>
                                     {list.results.length > 0 ? (
@@ -122,11 +135,15 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                 ((listType === 'top_rated' &&
                     dataTopTVList?.case({
                         pending: () => (
-                            <div className="loader">
+                            <div>
                                 <span className="loader__text">Загрузка...</span>
                             </div>
                         ),
-                        rejected: () => <div>Error</div>,
+                        rejected: () => (
+                            <div>
+                                <span className="loader__text">Error</span>
+                            </div>
+                        ),
                         fulfilled: (list) => (
                             <>
                                 <Swiper
@@ -148,11 +165,15 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                     (listType === 'popular' &&
                         dataPopularTVList?.case({
                             pending: () => (
-                                <div className="loader">
+                                <div>
                                     <span className="loader__text">Загрузка...</span>
                                 </div>
                             ),
-                            rejected: () => <div>Error</div>,
+                            rejected: () => (
+                                <div>
+                                    <span className="loader__text">Error</span>
+                                </div>
+                            ),
                             fulfilled: (list) => (
                                 <>
                                     <Swiper
