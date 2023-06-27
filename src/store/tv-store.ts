@@ -1,4 +1,4 @@
-import { TItemTV, TMovieItem, TResponseMovieList, TResponseTVList } from '../api/types';
+import {  TMovieItem, TResponseMovieList, TResponseTVList } from '../api/types';
 import { computed, makeAutoObservable, makeObservable, observable } from 'mobx';
 import { IMoviesResponseKP, TListType, TMovieKP } from '../types';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
@@ -11,8 +11,8 @@ class TVStore {
     dataTopTVList?: IPromiseBasedObservable<TResponseTVList>;
 
     /*****/
-    popularTVList: TItemTV[] = [];
-    topTVList: TItemTV[] = [];
+    popularTVList: TMovieItem[] = [];
+    topTVList: TMovieItem[] = [];
 
     constructor() {
         makeObservable(this, {
@@ -30,10 +30,33 @@ class TVStore {
         return 0;
     }
 
-
-
     getTVList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
-        switch (listType) {
+        // if(listType === 'popular')
+
+        listType === 'popular'
+            ? this.dataPopularTVList
+            : (this.dataTopTVList = fromPromise(
+                  tmdbApi.getTvList(listType, params).then((data) => {
+                      const dataResult = data.results.map((item: any) => {
+                          return {
+                              id: item.id,
+                              title: item.name,
+                              backdrop_path: item.backdrop_path,
+                              overview: item.overview,
+                              poster_path: item.poster_path,
+                          };
+                      });
+                      const { page } = params?.params;
+                      if (page === 1) {
+                          this.popularTVList = dataResult;
+                      } else {
+                          this.popularTVList.push(...dataResult);
+                      }
+                      return data;
+                  }),
+              ));
+
+        /*  switch (listType) {
             case 'popular':
                 this.dataPopularTVList = fromPromise(
                     tmdbApi.getTvList(listType, params).then((data) => {
@@ -62,21 +85,7 @@ class TVStore {
                 break;
             default:
                 break;
-        }
-    };
-
-    getPopularTVListLoadMore = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
-        this.dataPopularTVList = fromPromise(
-            tmdbApi.getTvList(listType, params).then((data) => {
-                const { page } = params?.params;
-                if (page === 1) {
-                    this.popularTVList = data.results;
-                } else {
-                    this.popularTVList.push(...data.results);
-                }
-                return data;
-            }),
-        );
+        } */
     };
 }
 

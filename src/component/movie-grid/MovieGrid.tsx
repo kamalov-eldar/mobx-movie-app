@@ -131,7 +131,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
         return (
             <div className="loader">
                 <span className="loader__text">
-                rejected MovieGrid {category}-{listType}...
+                    rejected MovieGrid {category}-{listType}...
                 </span>
             </div>
         );
@@ -167,7 +167,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
                 ) : (
                     <>
                         {popularTVList.map((item, i) => {
-                            return <MovieCard category={category} tvItem={item} key={item.id} />;
+                            return <MovieCard category={category} movieItem={item} key={item.id} />;
                         })}
                     </>
                 )}

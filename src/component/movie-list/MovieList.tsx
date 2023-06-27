@@ -1,10 +1,7 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { TCategoryType, TListType } from '../../types';
 import './MovieList.scss';
-import tmdbApi from '../../api/tmdbApi';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import apiConfig from '../../api/apiConfig';
-import { TItemTV, TMovieItem } from '../../api/types';
 import { useStores } from '../../root-store-context';
 import { observer } from 'mobx-react';
 import MovieCard from '../movie-card/MovieCard';
@@ -18,7 +15,7 @@ type MovieListProps = {
 const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
     const { moviesStore, tvStore } = useStores();
     const { dataPopularMovieList, dataTopMovieList, dataSimilarMovieList, getMovieList } = moviesStore;
-    const { dataTopTVList, dataPopularTVList, getTVList } = tvStore;
+    const { dataTopTVList, topTVList, dataPopularTVList, popularTVList, getTVList } = tvStore;
 
     useEffect(() => {
         const params = { page: 1 };
@@ -144,7 +141,7 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                                 <span className="loader__text">Error</span>
                             </div>
                         ),
-                        fulfilled: (list) => (
+                        fulfilled: () => (
                             <>
                                 <Swiper
                                     // modules={[Autoplay]}
@@ -153,9 +150,9 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                                     slidesPerView={'auto'}
                                     // autoplay={{ delay: 3000 }}
                                 >
-                                    {list.results.map((item, i) => (
+                                    {topTVList.map((item, i) => (
                                         <SwiperSlide key={i}>
-                                            <MovieCard tvItem={item} category={category} />
+                                            <MovieCard movieItem={item} category={category} />
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>
@@ -174,7 +171,7 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                                     <span className="loader__text">Error</span>
                                 </div>
                             ),
-                            fulfilled: (list) => (
+                            fulfilled: () => (
                                 <>
                                     <Swiper
                                         // modules={[Autoplay]}
@@ -183,9 +180,9 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                                         slidesPerView={'auto'}
                                         // autoplay={{ delay: 3000 }}
                                     >
-                                        {list.results.map((item, i) => (
+                                        {popularTVList.map((item, i) => (
                                             <SwiperSlide key={i}>
-                                                <MovieCard tvItem={item} category={category} />
+                                                <MovieCard movieItem={item} category={category} />
                                             </SwiperSlide>
                                         ))}
                                     </Swiper>
