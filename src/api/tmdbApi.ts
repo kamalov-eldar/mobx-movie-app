@@ -17,18 +17,21 @@ const tmdbApi = {
         return axiosClient.get<never, TResponseMovieList>(url, params);
     },
     // https://api.themoviedb.org/3/tv/{'popular' | 'on_the_air' | 'top_rated'}
-    getTvList: (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
+    getTvList: async (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
         const url = 'tv/' + listType;
-        return axiosClient.get<never, any>(url, params);
-        /*  return data.results.map((item) => {
-            return {
-                id: item.id,
-                title: item.name,
-                backdrop_path: item.backdrop_path,
-                overview: item.overview,
-                poster_path: item.poster_path,
-            };
-        }); */
+        const data = await axiosClient.get<never, TResponseMovieList>(url, params);
+        return {
+            ...data,
+            results: data.results.map((item: any) => {
+                return {
+                    id: item.id,
+                    title: item.name,
+                    backdrop_path: item.backdrop_path,
+                    overview: item.overview,
+                    poster_path: item.poster_path,
+                };
+            }),
+        };
     },
     // https://api.themoviedb.org/3/movie/:movieId/videos
     getVideos: (category: TCategoryType, id: number) => {

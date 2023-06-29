@@ -16,11 +16,11 @@ const MovieSearch: FC<MovieSearchProps> = ({ category }) => {
 
     const { keyword, setKeyword, searchMovie } = moviesStore;
 
-    const { popularTVList: popularTVListLoadMore, totalPagesTVList } = tvStore;
+    const { totalPagesTVList } = tvStore;
 
     const goToSearch = useCallback(() => {
         console.log('keyword: ', keyword);
-
+        console.log('goToSearch: ');
         if (keyword.trim().length > 0) {
             navigate(`/${category}/search/${keyword}`);
             const params = {

@@ -9,6 +9,7 @@ import { AxiosRequestConfig } from 'axios';
 class MoviesStore {
     dataPopularMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataTopMovieList?: IPromiseBasedObservable<TResponseMovieList>;
+    dataSearchMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataUpcomingMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataSimilarMovieList?: IPromiseBasedObservable<TResponseMovieList>;
 
@@ -16,6 +17,7 @@ class MoviesStore {
     upcomingMovieList: TMovieItem[] = [];
     topMovieList: TMovieItem[] = [];
     popularMovieList: TMovieItem[] = [];
+    searchMovieList: TMovieItem[] = [];
     totalpages: number = 0;
 
     /**  search **/
@@ -36,6 +38,8 @@ class MoviesStore {
             upcomingMovieList: observable,
             dataUpcomingMovieList: observable,
             dataSimilarMovieList: observable,
+            searchMovieList: observable,
+            dataSearchMovieList: observable,
 
             keyword: observable,
             movieDetail: observable,
@@ -112,6 +116,10 @@ class MoviesStore {
         }
     };
 
+    clearMovieList = () => {
+        this.popularMovieList = [];
+    };
+
     /*  getUpcomingMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
         tmdbApi.getMovieList(listType, params).then((data) => {
             const { page } = params?.params;
@@ -131,14 +139,17 @@ class MoviesStore {
     };
 
     searchMovie = (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
-        tmdbApi.search(category, params).then((data) => {
-            const { page } = params?.params;
-            if (page === 1) {
-                this.upcomingMovieList = data.results;
-            } else {
-                this.upcomingMovieList.push(...data.results);
-            }
-        });
+        this.dataSearchMovieList = fromPromise(
+            tmdbApi.search(category, params).then((data) => {
+                const { page } = params?.params;
+                if (page === 1) {
+                    this.searchMovieList = data.results;
+                } else {
+                    this.searchMovieList.push(...data.results);
+                }
+                return data;
+            }),
+        );
     };
 
     getMovieDetails = (category: TCategoryType, id: number, params: AxiosRequestConfig<any> | undefined) => {

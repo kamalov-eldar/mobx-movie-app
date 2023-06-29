@@ -32,6 +32,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
         keyword,
         searchMovie,
         resetMoviesList,
+        searchMovieList
     } = moviesStore;
 
     const { popularTVList, totalPagesTVList, getTVList, topTVList, dataPopularTVList, dataTopTVList } = tvStore;
@@ -161,6 +162,9 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
                         {listType === 'top_rated' &&
                             topMovieList.map((item, i) => <MovieCard category={category} movieItem={item} key={item.id} />)}
                         {upcomingMovieList.map((item, i) => (
+                            <MovieCard category={category} movieItem={item} key={item.id} />
+                        ))}
+                        {searchMovieList.map((item, i) => (
                             <MovieCard category={category} movieItem={item} key={item.id} />
                         ))}
                     </>

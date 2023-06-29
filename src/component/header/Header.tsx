@@ -11,11 +11,11 @@ const headerNav = [
     },
     {
         display: 'Upcoming Movies',
-        path: 'catalog/movie/upcoming',
+        path: '/catalog/movie/upcoming',
     },
     {
         display: 'TV Series',
-        path: 'catalog/tv/popular',
+        path: '/catalog/tv/popular',
     },
 ];
 
@@ -38,6 +38,8 @@ const Header = () => {
             window.removeEventListener('scroll', shrinkHeader);
         };
     }, []);
+
+   
 
     return (
         <div ref={headerRef} className="header">
