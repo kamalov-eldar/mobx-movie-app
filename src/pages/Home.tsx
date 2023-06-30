@@ -23,7 +23,7 @@ import { TCategoryItem } from '../api/types';
     },
 }; */
 
-const category: Array<TCategoryItem> = [
+const categoryPage: Array<TCategoryItem> = [
     { title: 'Trending Movies', category: 'movie', listType: 'popular' },
     { title: 'Top Rated Movies', category: 'movie', listType: 'top_rated' },
     { title: 'Trending TV', category: 'tv', listType: 'popular' },
@@ -31,24 +31,28 @@ const category: Array<TCategoryItem> = [
 ];
 
 const Home = () => {
-    const onClick = () => {};
     return (
         <>
             <HeroSlide />
             <div className="container">
-                {/* {category.map((category, idx) => ( */}
-                <div /* key={category.title + idx} */ className="section mb-3">
-                    <div className="section__header mb-2">
-                        <h2>{'Top 100 '}</h2>
-                        <Link to="/movie">
-                            <OutlineButton className="small" onClick={onClick}>
-                                View More
-                            </OutlineButton>
-                        </Link>
-                    </div>
-                    <MovieList category={'movie'} listType={'top_rated'} />
-                </div>
-                {/*  ))} */}
+
+                {categoryPage.map((item, idx) => {
+                    const { category, listType, title } = item;
+
+                    const link = 'catalog/' + category + '/' + listType;
+
+                    return (
+                        <div key={title + idx} className="section mb-3">
+                            <div className="section__header mb-2">
+                                <h2>{title}</h2>
+                                <Link to={link}>
+                                    <OutlineButton className="small">View More</OutlineButton>
+                                </Link>
+                            </div>
+                            <MovieList category={category} listType={listType} />
+                        </div>
+                    );
+                })}
             </div>
         </>
     );

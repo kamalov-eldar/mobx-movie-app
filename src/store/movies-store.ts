@@ -27,6 +27,8 @@ class MoviesStore {
 
     dataPopularMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataTopMovieList?: IPromiseBasedObservable<TResponseMovieList>;
+    dataSearchList?: IPromiseBasedObservable<TResponseMovieList>;
+    dataUpcomingMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataSimilarMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataUpcomingMovieList?: IPromiseBasedObservable<TResponseMovieList>;
 
@@ -36,7 +38,10 @@ class MoviesStore {
 
     /*******/
     upcomingMovieList: TMovieItem[] = [];
-    totalPagesUpcomingMovieList: number = 0;
+    topMovieList: TMovieItem[] = [];
+    popularMovieList: TMovieItem[] = [];
+    searchList: TMovieItem[] = [];
+    totalpages: number = 0;
 
     /**  search **/
     keyword: string = '';
@@ -61,15 +66,21 @@ class MoviesStore {
             /**tmdb**/
             dataUpcomingMovieList: observable,
             dataPopularMovieList: observable,
+            popularMovieList: observable,
             dataTopMovieList: observable,
-            dataSimilarMovieList: observable,
+            topMovieList: observable,
             upcomingMovieList: observable,
-            totalPagesUpcomingMovieList: observable,
+            dataUpcomingMovieList: observable,
+            dataSimilarMovieList: observable,
+            searchList: observable,
+            dataSearchList: observable,
+
             keyword: observable,
             movieDetail: observable,
             dataMovieDetail: observable,
             casts: observable,
             videos: observable,
+            totalpages: observable,
 
             getTop100: action,
             setKeyword: action,
@@ -131,6 +142,13 @@ class MoviesStore {
             case 'popular':
                 this.dataPopularMovieList = fromPromise(
                     tmdbApi.getMovieList(listType, params).then((data) => {
+                        const { page } = params?.params;
+                        if (page === 1) {
+                            this.popularMovieList = data.results;
+                        } else {
+                            this.popularMovieList.push(...data.results);
+                        }
+                        this.totalpages = data.total_pages;
                         return data;
                     }),
                 );
@@ -138,6 +156,27 @@ class MoviesStore {
             case 'top_rated':
                 this.dataTopMovieList = fromPromise(
                     tmdbApi.getMovieList(listType, params).then((data) => {
+                        const { page } = params?.params;
+                        if (page === 1) {
+                            this.topMovieList = data.results;
+                        } else {
+                            this.topMovieList.push(...data.results);
+                        }
+                        this.totalpages = data.total_pages;
+                        return data;
+                    }),
+                );
+                break;
+            case 'upcoming':
+                this.dataUpcomingMovieList = fromPromise(
+                    tmdbApi.getMovieList(listType, params).then((data) => {
+                        const { page } = params?.params;
+                        if (page === 1) {
+                            this.upcomingMovieList = data.results;
+                        } else {
+                            this.upcomingMovieList.push(...data.results);
+                        }
+                        this.totalpages = data.total_pages;
                         return data;
                     }),
                 );
@@ -145,6 +184,7 @@ class MoviesStore {
             case 'similar':
                 this.dataSimilarMovieList = fromPromise(
                     tmdbApi.getMovieList(listType, params, id).then((data) => {
+                        this.totalpages = data.total_pages;
                         return data;
                     }),
                 );
@@ -155,29 +195,8 @@ class MoviesStore {
         }
     };
 
-    getUpcomingMovieList = (params: AxiosRequestConfig<any> | undefined) => {
-        this.dataUpcomingMovieList = fromPromise(
-            tmdbApi.getUpcomingMovieList(params).then((data) => {
-                console.log('data: ', data);
-
-                const { page } = params?.params;
-                if (page === 1) {
-                    this.upcomingMovieList = data.results;
-                } else {
-                    this.upcomingMovieList.push(...data.results);
-                }
-                this.totalPagesUpcomingMovieList = data.total_pages;
-                return data;
-            }),
-        );
-    };
-
-    searchByKeyword = (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
-        tmdbApi.searchByKeyword(category, params);
-    };
-
-    searchMovie = (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
-        tmdbApi.search(category, params).then((data) => {
+    /*  getUpcomingMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
+        tmdbApi.getMovieList(listType, params).then((data) => {
             const { page } = params?.params;
             if (page === 1) {
                 this.upcomingMovieList = data.results;
@@ -186,6 +205,26 @@ class MoviesStore {
             }
             this.totalPagesUpcomingMovieList = data.total_pages;
         });
+    }; */
+
+    // imdbComingSoonList
+
+    searchByKeyword = (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
+        tmdbApi.searchByKeyword(category, params);
+    };
+
+    searchMovie = (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
+        this.dataSearchList = fromPromise(
+            tmdbApi.search(category, params).then((data) => {
+                const { page } = params?.params;
+                if (page === 1) {
+                    this.searchList = data.results;
+                } else {
+                    this.searchList.push(...data.results);
+                }
+                return data;
+            }),
+        );
     };
 
     getMovieDetails = (category: TCategoryType, id: number, params: AxiosRequestConfig<any> | undefined) => {
@@ -206,8 +245,30 @@ class MoviesStore {
             // return data;
         });
     };
+
     resetCasts = () => {
         this.casts = [];
+    };
+
+    resetMoviesList = (listType: TListType) => {
+        switch (listType) {
+            case 'popular':
+                this.popularMovieList = [];
+                break;
+            case 'top_rated':
+                this.topMovieList = [];
+                break;
+            case 'upcoming':
+                this.upcomingMovieList = [];
+                break;
+
+            default:
+                break;
+        }
+    };
+
+    clearMovieList = () => {
+        this.popularMovieList = [];
     };
 
     getVideos = (category: TCategoryType, id: number) => {

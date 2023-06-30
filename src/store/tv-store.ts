@@ -1,4 +1,4 @@
-import { TItemTV, TMovieItem, TResponseMovieList, TResponseTVList } from '../api/types';
+import { TMovieItem, TResponseMovieList, TResponseTVList } from '../api/types';
 import { computed, makeAutoObservable, makeObservable, observable } from 'mobx';
 import { TListType } from '../api/types';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
@@ -7,19 +7,22 @@ import tmdbApi from '../api/tmdbApi';
 import { AxiosRequestConfig } from 'axios';
 
 class TVStore {
-    dataPopularTVList?: IPromiseBasedObservable<TResponseTVList>;
-    dataTopTVList?: IPromiseBasedObservable<TResponseTVList>;
+    dataPopularTVList?: IPromiseBasedObservable<TResponseMovieList>;
+    dataTopTVList?: IPromiseBasedObservable<TResponseMovieList>;
 
     /*****/
-    popularTVListLoadMore: TItemTV[] = [];
+    popularTVList: TMovieItem[] = [];
+    topTVList: TMovieItem[] = [];
 
     constructor() {
         makeObservable(this, {
             dataPopularTVList: observable,
             dataTopTVList: observable,
+            topTVList: observable,
+            popularTVList: observable,
 
             totalPagesTVList: computed,
-            topTVList: computed,
+            //getTVList: computed,
         });
     }
 
@@ -28,37 +31,37 @@ class TVStore {
         return 0;
     }
 
-    get topTVList() {
-        if (this.dataTopTVList?.state === 'fulfilled') return this.dataTopTVList.value.results;
-        return [];
-    }
-
     getTVList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
         switch (listType) {
             case 'popular':
-                this.dataPopularTVList = fromPromise(tmdbApi.getTvList(listType, params).then((data) => data));
-
+                this.dataPopularTVList = fromPromise(
+                    tmdbApi.getTvList(listType, params).then((data) => {
+                        const { page } = params?.params;
+                        if (page === 1) {
+                            this.popularTVList = data.results;
+                        } else {
+                            this.popularTVList.push(...data.results);
+                        }
+                        return data;
+                    }),
+                );
                 break;
             case 'top_rated':
-                this.dataTopTVList = fromPromise(tmdbApi.getTvList(listType, params).then((data) => data));
+                this.dataTopTVList = fromPromise(
+                    tmdbApi.getTvList(listType, params).then((data) => {
+                        const { page } = params?.params;
+                        if (page === 1) {
+                            this.topTVList = data.results;
+                        } else {
+                            this.topTVList.push(...data.results);
+                        }
+                        return data;
+                    }),
+                );
                 break;
             default:
                 break;
         }
-    };
-
-    getPopularTVListLoadMore = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
-        this.dataPopularTVList = fromPromise(
-            tmdbApi.getTvList(listType, params).then((data) => {
-                const { page } = params?.params;
-                if (page === 1) {
-                    this.popularTVListLoadMore = data.results;
-                } else {
-                    this.popularTVListLoadMore.push(...data.results);
-                }
-                return data;
-            }),
-        );
     };
 }
 

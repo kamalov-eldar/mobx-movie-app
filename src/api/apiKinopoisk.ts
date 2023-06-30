@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import queryString from 'query-string';
-import { TMovie, TMovieKP, TMovieListResponse, TypeList } from './types';
 
 const axiosClient = axios.create({
     baseURL: 'https://kinopoiskapiunofficial.tech/api/v2.2/films/',

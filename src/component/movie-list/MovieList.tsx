@@ -1,9 +1,8 @@
-import { FC, useEffect, useState } from 'react';
+
+import { FC, useEffect } from 'react';
 import './MovieList.scss';
-import tmdbApi from '../../api/tmdbApi';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import apiConfig from '../../api/apiConfig';
-import { TCategoryType, TItemTV, TListType, TMovieItem } from '../../api/types';
+
 import { useStores } from '../../root-store-context';
 import { observer } from 'mobx-react';
 import MovieCard from '../movie-card/MovieCard';
@@ -15,47 +14,182 @@ type MovieListProps = {
 };
 
 const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
-    const { moviesStore } = useStores();
-    const { dataTop100MovieList, top100MovieList, getTop100 } = moviesStore;
+    const { moviesStore, tvStore } = useStores();
+    const { dataPopularMovieList, dataTopMovieList, dataSimilarMovieList, getMovieList } = moviesStore;
+    const { dataTopTVList, topTVList, dataPopularTVList, popularTVList, getTVList } = tvStore;
 
     useEffect(() => {
         const params = { page: 1 };
-        getTop100();
-    }, []);
 
-    if (!dataTop100MovieList) {
-        return <div className="loader">No Data</div>;
-    }
-
-    /* if (!dataTopMovieList) {
-        return <div>No Data</div>;
-    } */
+        switch (category) {
+            case 'movie':
+                getMovieList(listType, { params }, id);
+                break;
+            case 'tv':
+                getTVList(listType, { params });
+                break;
+        }
+    }, [category, listType, id]);
 
     return (
         <div className="movie-list">
-            {dataTop100MovieList.case({
-                pending: () => (
-                    <div className="loader">
-                        <span className="loader__text">Загрузка...</span>
-                    </div>
-                ),
-                rejected: () => <div className="loader">Error</div>,
-                fulfilled: () => (
-                    <Swiper
-                        // modules={[Autoplay]}
-                        grabCursor={true}
-                        spaceBetween={10}
-                        slidesPerView={'auto'}
-                        // autoplay={{ delay: 3000 }}
-                    >
-                        {top100MovieList.map((item, i) => (
-                            <SwiperSlide key={i}>
-                                <MovieCard movie={item} />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                ),
-            })}
+            {category === 'movie' &&
+                ((listType === 'popular' &&
+                    dataPopularMovieList?.case({
+                        pending: () => (
+                            <div>
+                                <span className="loader__text">Загрузка...</span>
+                            </div>
+                        ),
+                        rejected: () => (
+                            <div>
+                                <span className="loader__text">Error</span>
+                            </div>
+                        ),
+                        fulfilled: (list) => (
+                            <>
+                                <Swiper
+                                    // modules={[Autoplay]}
+                                    grabCursor={true}
+                                    spaceBetween={10}
+                                    slidesPerView={'auto'}
+                                    // autoplay={{ delay: 3000 }}
+                                >
+                                    {list.results.map((item, i) => (
+                                        <SwiperSlide key={i}>
+                                            <MovieCard movieItem={item} category={category} />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            </>
+                        ),
+                    })) ||
+                    (listType === 'top_rated' &&
+                        dataTopMovieList?.case({
+                            pending: () => (
+                                <div>
+                                    <span className="loader__text">Загрузка...</span>
+                                </div>
+                            ),
+                            rejected: () => (
+                                <div>
+                                    <span className="loader__text">Error</span>
+                                </div>
+                            ),
+
+                            fulfilled: (list) => (
+                                <>
+                                    <Swiper
+                                        // modules={[Autoplay]}
+                                        grabCursor={true}
+                                        spaceBetween={10}
+                                        slidesPerView={'auto'}
+                                        // autoplay={{ delay: 3000 }}
+                                    >
+                                        {list.results.map((item, i) => (
+                                            <SwiperSlide key={i}>
+                                                <MovieCard movieItem={item} category={category} />
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </>
+                            ),
+                        })) ||
+                    (listType === 'similar' &&
+                        dataSimilarMovieList?.case({
+                            pending: () => (
+                                <div className="loader">
+                                    <span className="loader__text">Загрузка...</span>
+                                </div>
+                            ),
+                            rejected: () => (
+                                <div>
+                                    <span className="loader__text">Error</span>
+                                </div>
+                            ),
+                            fulfilled: (list) => (
+                                <>
+                                    {list.results.length > 0 ? (
+                                        <Swiper
+                                            // modules={[Autoplay]}
+                                            grabCursor={true}
+                                            spaceBetween={10}
+                                            slidesPerView={'auto'}
+                                            // autoplay={{ delay: 3000 }}
+                                        >
+                                            {list.results.map((item, i) => (
+                                                <SwiperSlide key={i}>
+                                                    <MovieCard movieItem={item} category={category} />
+                                                </SwiperSlide>
+                                            ))}
+                                        </Swiper>
+                                    ) : (
+                                        <div>no matches </div>
+                                    )}
+                                </>
+                            ),
+                        })))}
+            {category === 'tv' &&
+                ((listType === 'top_rated' &&
+                    dataTopTVList?.case({
+                        pending: () => (
+                            <div>
+                                <span className="loader__text">Загрузка...</span>
+                            </div>
+                        ),
+                        rejected: () => (
+                            <div>
+                                <span className="loader__text">Error</span>
+                            </div>
+                        ),
+                        fulfilled: () => (
+                            <>
+                                <Swiper
+                                    // modules={[Autoplay]}
+                                    grabCursor={true}
+                                    spaceBetween={10}
+                                    slidesPerView={'auto'}
+                                    // autoplay={{ delay: 3000 }}
+                                >
+                                    {topTVList.map((item, i) => (
+                                        <SwiperSlide key={i}>
+                                            <MovieCard movieItem={item} category={category} />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            </>
+                        ),
+                    })) ||
+                    (listType === 'popular' &&
+                        dataPopularTVList?.case({
+                            pending: () => (
+                                <div>
+                                    <span className="loader__text">Загрузка...</span>
+                                </div>
+                            ),
+                            rejected: () => (
+                                <div>
+                                    <span className="loader__text">Error</span>
+                                </div>
+                            ),
+                            fulfilled: () => (
+                                <>
+                                    <Swiper
+                                        // modules={[Autoplay]}
+                                        grabCursor={true}
+                                        spaceBetween={10}
+                                        slidesPerView={'auto'}
+                                        // autoplay={{ delay: 3000 }}
+                                    >
+                                        {popularTVList.map((item, i) => (
+                                            <SwiperSlide key={i}>
+                                                <MovieCard movieItem={item} category={category} />
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </>
+                            ),
+                        })))}
         </div>
     );
 };

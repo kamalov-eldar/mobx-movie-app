@@ -1,20 +1,71 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import PageHeader from '../component/page-header/PageHeader';
 import MovieGrid from '../component/movie-grid/MovieGrid';
-import { TCategoryType } from '../api/types';
+
+import { TCategoryType, TListType } from '../types';
+import { observer } from 'mobx-react';
+import { useStores } from '../root-store-context';
 
 const Catalog = () => {
-    const { category: categoryUrl } = useParams<{ category: TCategoryType }>();
+    const { category: categoryUrl, listType } = useParams<{ category: TCategoryType; listType: TListType }>();
+    const { pathname } = useLocation();
+
+    const { moviesStore, tvStore } = useStores();
+
+    const { dataPopularMovieList, dataTopMovieList } = moviesStore;
+
+    const arrNav = [
+        {
+            display: 'Home',
+            path: '/',
+        },
+        {
+            display: 'Upcoming Movies',
+            path: '/catalog/movie/upcoming',
+        },
+        {
+            display: 'Top Rated Movies',
+            path: '/catalog/movie/top_rated',
+        },
+        {
+            display: 'Trending Movies',
+            path: '/catalog/movie/popular',
+        },
+        {
+            display: 'TV Series Trending',
+            path: '/catalog/tv/popular',
+        },
+        {
+            display: 'Top Rated TV Series',
+            path: '/catalog/tv/top_rated',
+        },
+    ];
+
+    const headerTitle = arrNav.find((item) => {
+        return item.path === pathname;
+    });
 
     return (
         <>
-            <PageHeader>
-                {(categoryUrl === 'movie' ? 'Coming Soon Movies ' : 'TV Series ') + String(new Date().getFullYear())}
-            </PageHeader>
+
+            <PageHeader title={headerTitle?.display} />
             <div className="container">
                 <div className="section mb-3">
-                    <MovieGrid category={categoryUrl} />
+                    {/* {(dataPopularMovieList || dataTopMovieList)?.case({
+                        pending: () => (
+                            <div className="loader">
+                                <span className="loader__text">Загрузка...</span>
+                            </div>
+                        ),
+                        rejected: () => <div>Error</div>,
+                        fulfilled: (list) => (
+                            <>
+                                <MovieGrid category={categoryUrl} listType={listType} />
+                            </>
+                        ),
+                    })} */}
+                    <MovieGrid category={categoryUrl} listType={listType} />
                 </div>
             </div>
         </>

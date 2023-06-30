@@ -1,10 +1,8 @@
 import React, { FC, useEffect, useRef } from 'react';
-import { RouteComponentProps, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import './Header.scss';
 import logo from '../../assets/tmovie.png';
 import { Link } from 'react-router-dom';
-
-type HeaderProps = {};
 
 const headerNav = [
     {
@@ -12,12 +10,13 @@ const headerNav = [
         path: '/',
     },
     {
-        display: 'Coming Soon',
-        path: '/movie',
+
+        display: 'Upcoming Movies',
+        path: '/catalog/movie/upcoming',
     },
     {
         display: 'TV Series',
-        path: '/tv',
+        path: '/catalog/tv/popular',
     },
 ];
 
@@ -40,6 +39,8 @@ const Header = () => {
             window.removeEventListener('scroll', shrinkHeader);
         };
     }, []);
+
+
 
     return (
         <div ref={headerRef} className="header">

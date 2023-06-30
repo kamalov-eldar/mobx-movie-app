@@ -2,15 +2,22 @@ import { FC } from 'react';
 import './MovieCard.scss';
 import { Link } from 'react-router-dom';
 import Button from '../button/Button';
-import { TMovie } from '../../api/types';
+
+import { TCategoryType } from '../../types';
+import { TMovieItem } from '../../api/types';
 import { observer } from 'mobx-react';
 
 type MovieCardProps = {
-    movie: TMovie;
+    movieItem: TMovieItem;
+    category: TCategoryType | undefined;
 };
 
-const MovieCard: FC<MovieCardProps> = ({ movie }) => {
-    const link = '/' + 'movie' + '/' + movie.id;
+const MovieCard: FC<MovieCardProps> = ({ movieItem, category }) => {
+    const link = '/' + category + '/' + movieItem.id;
+
+    const bg = apiConfig.w500Image(movieItem.poster_path || movieItem.backdrop_path);
+
+    const onClick = () => {};
 
     return (
         <Link to={link}>
@@ -19,7 +26,8 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
                     <i className="bx bx-play"></i>
                 </Button>
             </div>
-            <h3>{movie.name}</h3>
+
+            <h3>{movieItem.title}</h3>
         </Link>
     );
 };

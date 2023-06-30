@@ -1,8 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import tmdbApi from '../../api/tmdbApi';
-import apiConfig from '../../api/apiConfig';
-
 import SwiperCore, { Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -10,22 +7,39 @@ import HeroSlideItem from './Hero-slide-Item/HeroSlideItem';
 
 import './Hero-slide.scss';
 import TrailerModal from './Hero-slide-Item/TrailerModal';
-import { TMovieItem } from '../../api/types';
 import { useStores } from '../../root-store-context';
-import { observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 
 const HeroSlide: FC = () => {
     const { moviesStore } = useStores();
-    const { dataPopularMovieList, getMovieList } = moviesStore;
+    const { dataPopularMovieList, popularMovieList, clearMovieList } = moviesStore;
 
     SwiperCore.use([Autoplay]);
 
+
+    /*  if (!dataPopularMovieList) {
+        return (
+            <div className="hero-slide">
+                <div className="loader">
+                    <span className="loader__text"> No Data HeroSlide</span>
+                </div>
+            </div>
+        );
+    } */
+
     useEffect(() => {
-        getMovieList('popular', { params: { page: 1 } });
+        return () => {
+            clearMovieList();
+        };
     }, []);
 
-    if (!dataPopularMovieList) {
-        return <div className="loader">No Data</div>;
+    {
+        !dataPopularMovieList && (
+            <div className="loader">
+                <span className="loader__text"> No Data</span>
+            </div>
+        );
     }
 
     return (
@@ -36,28 +50,39 @@ const HeroSlide: FC = () => {
                         <span className="loader__text">Загрузка...</span>
                     </div>
                 ),
-                rejected: () => <div className="loader">Error</div>,
-                fulfilled: (movieList) => (
-                    <>
-                        <Swiper
-                            // modules={[Autoplay]}
-                            grabCursor={true}
-                            spaceBetween={0}
-                            slidesPerView={1}
-                            // autoplay={{ delay: 3000 }}
-                        >
-                            {movieList.results.map((item, i) => (
-                                <SwiperSlide key={i}>
-                                    {({ isActive }) => <HeroSlideItem item={item} className={`${isActive ? 'active' : ''}`} />}
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
 
-                        {movieList.results.map((item, i) => (
-                            <TrailerModal key={i} item={item} />
-                        ))}
-                    </>
+                rejected: () => (
+                    <div className="loader">
+                        <span className="loader__text">Rejected upload - Enable vpn in browser &nbsp;</span>
+                    </div>
                 ),
+                fulfilled: (movieList) => {
+                    //console.log('fulfilled: ');
+                    //console.log('popularMovieList: ', toJS(popularMovieList));
+
+                    return (
+                        <>
+                            <Swiper
+                                // modules={[Autoplay]}
+                                grabCursor={true}
+                                spaceBetween={0}
+                                slidesPerView={1}
+                                autoplay={{ delay: 3000 }}
+                            >
+                                {popularMovieList.map((item, i) => (
+                                    <SwiperSlide key={i}>
+                                        {({ isActive }) => (
+                                            <HeroSlideItem item={item} className={`${isActive ? 'active' : ''}`} />
+                                        )}
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                            {popularMovieList.map((item, i) => (
+                                <TrailerModal key={i} item={item} />
+                            ))}
+                        </>
+                    );
+                },
             })}
         </div>
     );
