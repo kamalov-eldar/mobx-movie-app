@@ -1,3 +1,6 @@
+export type TListType = 'popular' | 'top_rated' | 'upcoming' | 'similar';
+export type TCategoryType = 'movie' | 'tv';
+
 export type Genre = {
     name: string;
 };

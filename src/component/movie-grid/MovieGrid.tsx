@@ -3,18 +3,17 @@ import './MovieGrid.scss';
 import { useStores } from '../../root-store-context';
 import MovieCard from '../movie-card/MovieCard';
 
-import { TCategoryType, TListType } from '../../types';
 import { observer } from 'mobx-react';
 import { OutlineButton } from '../button/Button';
 import MovieSearch from '../movie-search/MovieSearch';
 import RejectUpload from '../reject-upload/RejectUpload';
 import { toJS } from 'mobx';
+import { TCategoryType, TListType } from '../../api/types';
 
 type MovieGridProps = {
     category: TCategoryType | undefined;
     listType: TListType | undefined;
 };
-
 
 const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
     const [page, setPage] = useState(1);
@@ -38,9 +37,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
 
     const { popularTVList, totalPagesTVList, getTVList, topTVList, dataPopularTVList, dataTopTVList } = tvStore;
 
-
     useEffect(() => {
-
         if (keyword === '') {
             const params = { page: 1 };
             if (category === 'tv') getTVList('popular', { params });
@@ -62,7 +59,6 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
             setPage(1);
             if (listType) resetMoviesList(listType);
         };
-
     }, [category, listType]);
 
     useEffect(() => {
@@ -152,10 +148,6 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
                 <span className="loader__text">Загрузка ...</span>
             </div>
         );
-    }
-
-    if (!dataImdbComingSoonList) {
-        return <div className="loader">No Data</div>;
     }
 
     return (
