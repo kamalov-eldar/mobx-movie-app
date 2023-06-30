@@ -38,9 +38,22 @@ const tmdbApi = {
         const url = category + '/' + id + '/videos';
         return axiosClient.get<never, TResponseVideosList>(url, { params: {} });
     },
-    search: (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
+    search: async (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
         const url = 'search/' + category;
-        return axiosClient.get<never, TResponseMovieList>(url, params);
+        const data = await axiosClient.get<never, TResponseMovieList>(url, params);
+        console.log('data: ', data);
+        return {
+            ...data,
+            results: data.results.map((item: any) => {
+                return {
+                    id: item.id,
+                    title: item.name,
+                    backdrop_path: item.backdrop_path,
+                    overview: item.overview,
+                    poster_path: item.poster_path,
+                };
+            }),
+        };
     },
     // https://api.themoviedb.org/3/search/keyword
 

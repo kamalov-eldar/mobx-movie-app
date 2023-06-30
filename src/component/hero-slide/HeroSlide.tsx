@@ -30,7 +30,6 @@ const HeroSlide: FC = () => {
 
     useEffect(() => {
         return () => {
-            console.log('clearMovieList');
             clearMovieList();
         };
     }, []);
@@ -57,7 +56,7 @@ const HeroSlide: FC = () => {
                     </div>
                 ),
                 fulfilled: (movieList) => {
-                    console.log('fulfilled: ');
+                   //console.log('fulfilled: ');
                     //console.log('popularMovieList: ', toJS(popularMovieList));
 
                     return (

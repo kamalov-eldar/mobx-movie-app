@@ -9,7 +9,7 @@ import { AxiosRequestConfig } from 'axios';
 class MoviesStore {
     dataPopularMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataTopMovieList?: IPromiseBasedObservable<TResponseMovieList>;
-    dataSearchMovieList?: IPromiseBasedObservable<TResponseMovieList>;
+    dataSearchList?: IPromiseBasedObservable<TResponseMovieList>;
     dataUpcomingMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataSimilarMovieList?: IPromiseBasedObservable<TResponseMovieList>;
 
@@ -17,7 +17,7 @@ class MoviesStore {
     upcomingMovieList: TMovieItem[] = [];
     topMovieList: TMovieItem[] = [];
     popularMovieList: TMovieItem[] = [];
-    searchMovieList: TMovieItem[] = [];
+    searchList: TMovieItem[] = [];
     totalpages: number = 0;
 
     /**  search **/
@@ -38,8 +38,8 @@ class MoviesStore {
             upcomingMovieList: observable,
             dataUpcomingMovieList: observable,
             dataSimilarMovieList: observable,
-            searchMovieList: observable,
-            dataSearchMovieList: observable,
+            searchList: observable,
+            dataSearchList: observable,
 
             keyword: observable,
             movieDetail: observable,
@@ -116,10 +116,6 @@ class MoviesStore {
         }
     };
 
-    clearMovieList = () => {
-        this.popularMovieList = [];
-    };
-
     /*  getUpcomingMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
         tmdbApi.getMovieList(listType, params).then((data) => {
             const { page } = params?.params;
@@ -139,13 +135,13 @@ class MoviesStore {
     };
 
     searchMovie = (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
-        this.dataSearchMovieList = fromPromise(
+        this.dataSearchList = fromPromise(
             tmdbApi.search(category, params).then((data) => {
                 const { page } = params?.params;
                 if (page === 1) {
-                    this.searchMovieList = data.results;
+                    this.searchList = data.results;
                 } else {
-                    this.searchMovieList.push(...data.results);
+                    this.searchList.push(...data.results);
                 }
                 return data;
             }),
@@ -190,6 +186,10 @@ class MoviesStore {
             default:
                 break;
         }
+    };
+
+    clearMovieList = () => {
+        this.popularMovieList = [];
     };
 
     getVideos = (category: TCategoryType, id: number) => {
