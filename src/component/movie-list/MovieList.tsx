@@ -98,7 +98,7 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                         dataSimilarMovieList?.case({
                             pending: () => (
                                 <div className="loader">
-                                    <span className="loader__text">SimilarMovieList Загрузка...</span>
+                                    <span className="loader__text">Загрузка...</span>
                                 </div>
                             ),
                             rejected: () => (

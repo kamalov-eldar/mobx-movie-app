@@ -41,13 +41,12 @@ const tmdbApi = {
     search: async (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
         const url = 'search/' + category;
         const data = await axiosClient.get<never, TResponseMovieList>(url, params);
-        console.log('data: ', data);
         return {
             ...data,
             results: data.results.map((item: any) => {
                 return {
                     id: item.id,
-                    title: item.name,
+                    title: category === 'movie' ? item.title : item.name,
                     backdrop_path: item.backdrop_path,
                     overview: item.overview,
                     poster_path: item.poster_path,

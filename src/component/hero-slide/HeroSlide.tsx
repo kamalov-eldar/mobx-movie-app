@@ -14,7 +14,6 @@ import { toJS } from 'mobx';
 const HeroSlide: FC = () => {
     const { moviesStore } = useStores();
     const { dataPopularMovieList, popularMovieList, clearMovieList } = moviesStore;
-    // console.log('dataPopularMovieList: ', !!dataPopularMovieList);
 
     SwiperCore.use([Autoplay]);
 
@@ -37,7 +36,7 @@ const HeroSlide: FC = () => {
     {
         !dataPopularMovieList && (
             <div className="loader">
-                <span className="loader__text"> No Data HeroSlide</span>
+                <span className="loader__text"> No Data</span>
             </div>
         );
     }
@@ -52,11 +51,11 @@ const HeroSlide: FC = () => {
                 ),
                 rejected: () => (
                     <div className="loader">
-                        <span className="loader__text">rejected - Enable vpn in browser &nbsp;</span>
+                        <span className="loader__text">Rejected upload - Enable vpn in browser &nbsp;</span>
                     </div>
                 ),
                 fulfilled: (movieList) => {
-                   //console.log('fulfilled: ');
+                    //console.log('fulfilled: ');
                     //console.log('popularMovieList: ', toJS(popularMovieList));
 
                     return (
@@ -66,7 +65,7 @@ const HeroSlide: FC = () => {
                                 grabCursor={true}
                                 spaceBetween={0}
                                 slidesPerView={1}
-                                // autoplay={{ delay: 3000 }}
+                                autoplay={{ delay: 3000 }}
                             >
                                 {popularMovieList.map((item, i) => (
                                     <SwiperSlide key={i}>

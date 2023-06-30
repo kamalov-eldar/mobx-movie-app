@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { useStores } from '../../root-store-context';
 import './MovieSearch.scss';
 import { observer } from 'mobx-react';

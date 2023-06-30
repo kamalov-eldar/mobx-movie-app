@@ -15,10 +15,7 @@ type MovieGridProps = {
 };
 
 const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
-    const [items, setItems] = useState([]);
     const [page, setPage] = useState(1);
-    const [totalPage, setTotalPage] = useState(0);
-
     const { moviesStore, tvStore } = useStores();
 
     const {
@@ -34,6 +31,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
         searchMovie,
         resetMoviesList,
         searchList,
+        setKeyword,
     } = moviesStore;
 
     const { popularTVList, totalPagesTVList, getTVList, topTVList, dataPopularTVList, dataTopTVList } = tvStore;
@@ -49,6 +47,10 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
                 query: keyword,
             };
             if (category) searchMovie(category, { params });
+            if (listType === 'upcoming') {
+                getMovieList(listType, { params });
+                setKeyword('');
+            }
         }
 
         return function cleanup() {
@@ -56,6 +58,10 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
             if (listType) resetMoviesList(listType);
         };
     }, [category, listType]);
+
+    useEffect(() => {
+        setKeyword('');
+    }, [category]);
 
     const loadMore = useCallback(() => {
         if (keyword === '') {
@@ -128,9 +134,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
     if ((dataTVList?.state || dataMovieList?.state) === 'rejected') {
         return (
             <div className="loader">
-                <span className="loader__text">
-                    rejected MovieGrid {category}-{listType}...
-                </span>
+                <span className="loader__text">Rejected upload</span>
             </div>
         );
     }
@@ -138,9 +142,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
     if (listMovie.length === 0 && listTV.length === 0) {
         return (
             <div className="loader">
-                <span className="loader__text">
-                    Загрузка MovieGrid {category}-{listType}...
-                </span>
+                <span className="loader__text">Загрузка ...</span>
             </div>
         );
     }
@@ -189,21 +191,3 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
 };
 
 export default observer(MovieGrid);
-
-{
-    /*  {data?.case({
-                pending: () => {
-                    console.log('pending: ');
-                    return (
-                        <div className="loader">
-                            <span className="loader__text">Загрузка...</span>
-                        </div>
-                    );
-                },
-                rejected: () => <div className="loader">rejected</div>,
-                fulfilled: () => {
-                    console.log('fulfilled: ');
-                    return <></>;
-                },
-            })} */
-}
