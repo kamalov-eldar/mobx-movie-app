@@ -4,7 +4,6 @@ import './MovieSearch.scss';
 import { observer } from 'mobx-react';
 
 import { useNavigate } from 'react-router-dom';
-import { TCategoryType } from '../../types';
 import Button from '../button/Button';
 import { TCategoryType } from '../../api/types';
 

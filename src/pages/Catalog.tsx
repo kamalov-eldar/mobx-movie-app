@@ -3,9 +3,9 @@ import { useLocation, useParams } from 'react-router-dom';
 import PageHeader from '../component/page-header/PageHeader';
 import MovieGrid from '../component/movie-grid/MovieGrid';
 
-import { TCategoryType, TListType } from '../types';
 import { observer } from 'mobx-react';
 import { useStores } from '../root-store-context';
+import { TCategoryType, TListType } from '../api/types';
 
 const Catalog = () => {
     const { category: categoryUrl, listType } = useParams<{ category: TCategoryType; listType: TListType }>();
@@ -48,23 +48,9 @@ const Catalog = () => {
 
     return (
         <>
-
             <PageHeader title={headerTitle?.display} />
             <div className="container">
                 <div className="section mb-3">
-                    {/* {(dataPopularMovieList || dataTopMovieList)?.case({
-                        pending: () => (
-                            <div className="loader">
-                                <span className="loader__text">Загрузка...</span>
-                            </div>
-                        ),
-                        rejected: () => <div>Error</div>,
-                        fulfilled: (list) => (
-                            <>
-                                <MovieGrid category={categoryUrl} listType={listType} />
-                            </>
-                        ),
-                    })} */}
                     <MovieGrid category={categoryUrl} listType={listType} />
                 </div>
             </div>

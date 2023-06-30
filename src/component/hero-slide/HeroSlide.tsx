@@ -5,7 +5,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import HeroSlideItem from './Hero-slide-Item/HeroSlideItem';
 
-import './Hero-slide.scss';
 import TrailerModal from './Hero-slide-Item/TrailerModal';
 import { useStores } from '../../root-store-context';
 import { observer } from 'mobx-react';
@@ -16,17 +15,6 @@ const HeroSlide: FC = () => {
     const { dataPopularMovieList, popularMovieList, clearMovieList } = moviesStore;
 
     SwiperCore.use([Autoplay]);
-
-
-    /*  if (!dataPopularMovieList) {
-        return (
-            <div className="hero-slide">
-                <div className="loader">
-                    <span className="loader__text"> No Data HeroSlide</span>
-                </div>
-            </div>
-        );
-    } */
 
     useEffect(() => {
         return () => {

@@ -6,23 +6,6 @@ import MovieList from '../component/movie-list/MovieList';
 import { observer } from 'mobx-react';
 import { TCategoryItem } from '../api/types';
 
-/* const category = {
-    categoryType: {
-        movie: 'movie',
-        tv: 'tv',
-    },
-    movieListType: {
-        upcoming: 'upcoming',
-        popular: 'popular',
-        top_rated: 'top_rated',
-    },
-    TVListType: {
-        popular: 'popular',
-        top_rated: 'top_rated',
-        on_the_air: 'on_the_air',
-    },
-}; */
-
 const categoryPage: Array<TCategoryItem> = [
     { title: 'Trending Movies', category: 'movie', listType: 'popular' },
     { title: 'Top Rated Movies', category: 'movie', listType: 'top_rated' },
@@ -35,7 +18,6 @@ const Home = () => {
         <>
             <HeroSlide />
             <div className="container">
-
                 {categoryPage.map((item, idx) => {
                     const { category, listType, title } = item;
 

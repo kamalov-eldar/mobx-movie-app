@@ -3,7 +3,7 @@ import apiConfig from '../../../api/apiConfig';
 import tmdbApi from '../../../api/tmdbApi';
 import { FC } from 'react';
 import Button, { OutlineButton } from '../../button/Button';
-import '../Hero-slide.scss';
+import '../Hero-Slide.scss';
 import { TMovieItem } from '../../../api/types';
 
 type HeroSlideItemProps = {

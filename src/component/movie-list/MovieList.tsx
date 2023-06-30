@@ -1,4 +1,3 @@
-
 import { FC, useEffect } from 'react';
 import './MovieList.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -6,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useStores } from '../../root-store-context';
 import { observer } from 'mobx-react';
 import MovieCard from '../movie-card/MovieCard';
+import { TCategoryType, TListType } from '../../api/types';
 
 type MovieListProps = {
     category: TCategoryType;
