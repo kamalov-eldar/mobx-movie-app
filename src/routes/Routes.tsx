@@ -9,7 +9,6 @@ const AppRouter = () => {
             <Route path="catalog/:category/:listType" element={<Catalog />}></Route>
             <Route path="/:category/search/:keyword" element={<Catalog />} />
             <Route path="/:category/:id" element={<Detail />} />
-            {/* <Route path="/:category" element={<Catalog />} /> */}
 
             <Route path="/" element={<Home />} />
         </Routes>
