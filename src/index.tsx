@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { Provider } from 'mobx-react';
-import store from './store/root-store';
 import { spy } from 'mobx';
 import { RootStoreContext } from './root-store-context';
 import RootStore from './store/root-store';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Router } from 'react-router-dom';
 
 spy((evt) => {
     if (evt.type === 'action') {
@@ -17,8 +15,8 @@ spy((evt) => {
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <RootStoreContext.Provider value={new RootStore()}>
-        <BrowserRouter>
+        <HashRouter>
             <App />
-        </BrowserRouter>
+        </HashRouter>
     </RootStoreContext.Provider>,
 );

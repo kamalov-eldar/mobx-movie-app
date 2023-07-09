@@ -6,12 +6,11 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 const AppRouter = () => {
     return (
         <Routes>
+            <Route path="/*" element={<Home />} />
             <Route path="/" element={<Home />} />
             <Route path="catalog/:category/:listType" element={<Catalog />}></Route>
             <Route path="/:category/search/:keyword" element={<Catalog />} />
             <Route path="/:category/:id" element={<Detail />} />
-
-            <Route path="*" element={<Navigate to="/" />} />
         </Routes>
     );
 };
