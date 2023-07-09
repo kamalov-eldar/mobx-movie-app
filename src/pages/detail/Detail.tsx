@@ -36,10 +36,10 @@ const Detail = () => {
             {dataMovieDetail?.case({
                 pending: () => (
                     <div className="loader">
-                        <span className="loader__text">Detail Загрузка...</span>
+                        <span className="loader__text">Загрузка...</span>
                     </div>
                 ),
-                rejected: () => <div className="loader">Error Detail</div>,
+                rejected: () => <div className="loader">Error</div>,
                 fulfilled: () => {
                     return (
                         <>

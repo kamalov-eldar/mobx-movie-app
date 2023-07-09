@@ -55,7 +55,7 @@ const HeroSlide: FC = () => {
                                 grabCursor={true}
                                 spaceBetween={0}
                                 slidesPerView={1}
-                                autoplay={{ delay: 3000 }}
+                                autoplay={{ delay: 6000 }}
                             >
                                 {popularMovieList.map((item, i) => (
                                     <SwiperSlide key={i}>
