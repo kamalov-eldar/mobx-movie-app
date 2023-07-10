@@ -12,18 +12,21 @@
 
     button {
         position: absolute;
-        right: 0;
-        top: 2px;
-
-        @include mobile {
-            right: 1px;
-            top: 1px;
-        }
+        right: -1px;
+        top: 50%;
     }
     .btn.small {
         background: #ff0000;
         padding: 7px 24px;
-        top: -1px;
+        margin-top: -19px;
+        @include tablet {
+            margin-top: -15px;
+            padding: 6px 19px;
+        }
+        @include mobile {
+            margin-top: -10px;
+            padding: 0.25rem 1.5rem;
+        }
     }
 }
 

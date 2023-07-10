@@ -28,11 +28,11 @@
     button {
         position: absolute;
         right: 0;
-        top: 2px;
+        top: 50%;
 
         @include mobile {
             right: 1px;
-            top: 1px;
+            top: 50%;
         }
     }
 }
