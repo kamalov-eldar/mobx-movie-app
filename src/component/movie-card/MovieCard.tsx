@@ -16,9 +16,8 @@ type MovieCardProps = {
 const MovieCard: FC<MovieCardProps> = ({ movieItem, category }) => {
     const link = '/' + category + '/' + movieItem.id;
 
-    const bg = apiConfig.w500Image(movieItem.poster_path || movieItem.backdrop_path);
-
-    const onClick = () => {};
+    const bg = apiConfig.w185Image(movieItem.poster_path || movieItem.backdrop_path);
+    //const poster = apiConfig.originalImage(item.poster_path);
 
     return (
         <Link to={link}>

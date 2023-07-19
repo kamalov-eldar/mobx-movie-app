@@ -9,6 +9,7 @@ import MovieSearch from '../movie-search/MovieSearch';
 import RejectUpload from '../reject-upload/RejectUpload';
 import { toJS } from 'mobx';
 import { TCategoryType, TListType } from '../../api/types';
+import { useNavigate, useParams } from 'react-router-dom';
 
 type MovieGridProps = {
     category: TCategoryType | undefined;
@@ -18,10 +19,12 @@ type MovieGridProps = {
 const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
     const [page, setPage] = useState(1);
     const { moviesStore, tvStore } = useStores();
+    const { keyword: keywordUrl } = useParams<{ keyword: string }>();
+    const navigate = useNavigate();
 
     const {
         getMovieList,
-        totalpages,
+        totalpagesMovieList,
         upcomingMovieList,
         dataUpcomingMovieList,
         popularMovieList,
@@ -38,9 +41,15 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
     const { popularTVList, totalPagesTVList, getTVList, topTVList, dataPopularTVList, dataTopTVList } = tvStore;
 
     useEffect(() => {
+        if (keywordUrl) {
+            navigate(`/`);
+        }
+    }, []);
+
+    useEffect(() => {
         if (keyword === '') {
             const params = { page: 1 };
-            if (category === 'tv') getTVList('popular', { params });
+            if (category === 'tv' && listType) getTVList(listType, { params });
             if (category === 'movie' && listType) getMovieList(listType, { params });
         } else {
             const params = {
@@ -48,14 +57,15 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
                 query: keyword,
             };
 
-            if (category) searchMovie(category, { params });
+            if (category) {
+                searchMovie(category, { params });
+            }
             if (listType === 'upcoming') {
                 getMovieList(listType, { params });
                 setKeyword('');
             }
         }
-
-        return function cleanup() {
+        return () => {
             setPage(1);
             if (listType) resetMoviesList(listType);
         };
@@ -70,15 +80,16 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
             const params = {
                 page: page + 1,
             };
-
             if (category === 'movie' && listType) getMovieList(listType, { params });
-            if (category === 'tv') getTVList('popular', { params });
+            if (category === 'tv' && listType) getTVList(listType, { params });
         } else {
             const params = {
                 page: page + 1,
                 query: keyword,
             };
-            if (category) searchMovie(category, { params });
+            if (category) {
+                searchMovie(category, { params });
+            }
         }
         setPage(page + 1);
     }, [page, category, keyword, listType]);
@@ -159,13 +170,6 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
             <div className="movie-grid">
                 {category === 'movie' && (
                     <>
-                        {/*  {listType === 'popular' &&
-                            popularMovieList.map((item, i) => <MovieCard category={category} movieItem={item} key={item.id} />)}
-                        {listType === 'top_rated' &&
-                            topMovieList.map((item, i) => <MovieCard category={category} movieItem={item} key={item.id} />)}
-                        {upcomingMovieList.map((item, i) => (
-                            <MovieCard category={category} movieItem={item} key={item.id} />
-                        ))} */}
                         {listMovie.map((item, i) => (
                             <MovieCard category={category} movieItem={item} key={item.id} />
                         ))}
@@ -176,13 +180,10 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
                         {listTV.map((item, i) => {
                             return <MovieCard category={category} movieItem={item} key={item.id} />;
                         })}
-                        {/* {searchList.map((item, i) => (
-                            <MovieCard category={category} movieItem={item} key={item.id} />
-                        ))} */}
                     </>
                 )}
             </div>
-            {page < (category === 'tv' ? totalPagesTVList : totalpages) ? (
+            {page < (category === 'tv' ? totalPagesTVList : totalpagesMovieList) ? (
                 <div className="movie-grid__loadmore">
                     <OutlineButton className="small" onClick={loadMore}>
                         Load more

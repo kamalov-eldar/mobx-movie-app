@@ -19,18 +19,3 @@ function App() {
 }
 
 export default App;
-// App.displayName = 'App'
-
-{
-    /* <div className="App">
-                <header className="App-header">
-                    <p>Movie Application</p>
-                </header>
-                <section className="container">
-                    <MoviesLists />
-                </section>
-                <header className="App-header">
-                    <p>The End</p>
-                </header>
-            </div> */
-}

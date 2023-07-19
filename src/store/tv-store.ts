@@ -1,8 +1,7 @@
-import { TMovieItem, TResponseMovieList, TResponseTVList } from '../api/types';
-import { computed, makeAutoObservable, makeObservable, observable } from 'mobx';
+import { TMovieItem, TResponseMovieList } from '../api/types';
+import { makeObservable, observable } from 'mobx';
 import { TListType } from '../api/types';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
-import { fetchData, fetchMovie } from '../api/apiKinopoisk';
 import tmdbApi from '../api/tmdbApi';
 import { AxiosRequestConfig } from 'axios';
 
@@ -13,6 +12,7 @@ class TVStore {
     /*****/
     popularTVList: TMovieItem[] = [];
     topTVList: TMovieItem[] = [];
+    totalPagesTVList: number = 0;
 
     constructor() {
         makeObservable(this, {
@@ -20,15 +20,8 @@ class TVStore {
             dataTopTVList: observable,
             topTVList: observable,
             popularTVList: observable,
-
-            totalPagesTVList: computed,
-            //getTVList: computed,
+            totalPagesTVList: observable,
         });
-    }
-
-    get totalPagesTVList() {
-        if (this.dataPopularTVList?.state === 'fulfilled') return this.dataPopularTVList.value.total_pages;
-        return 0;
     }
 
     getTVList = (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
@@ -42,6 +35,7 @@ class TVStore {
                         } else {
                             this.popularTVList.push(...data.results);
                         }
+                        this.totalPagesTVList = data.total_pages;
                         return data;
                     }),
                 );
@@ -55,6 +49,7 @@ class TVStore {
                         } else {
                             this.topTVList.push(...data.results);
                         }
+                        this.totalPagesTVList = data.total_pages;
                         return data;
                     }),
                 );

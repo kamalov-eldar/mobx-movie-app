@@ -44,9 +44,7 @@ const HeroSlide: FC = () => {
                         <span className="loader__text">Rejected upload - Enable vpn in browser &nbsp;</span>
                     </div>
                 ),
-                fulfilled: (movieList) => {
-                    //console.log('fulfilled: ');
-                    //console.log('popularMovieList: ', toJS(popularMovieList));
+                fulfilled: () => {
 
                     return (
                         <>

@@ -11,10 +11,6 @@ const Catalog = () => {
     const { category: categoryUrl, listType } = useParams<{ category: TCategoryType; listType: TListType }>();
     const { pathname } = useLocation();
 
-    const { moviesStore, tvStore } = useStores();
-
-    const { dataPopularMovieList, dataTopMovieList } = moviesStore;
-
     const arrNav = [
         {
             display: 'Home',

@@ -12,10 +12,11 @@ type HeroSlideItemProps = {
 };
 
 const HeroSlideItem: FC<HeroSlideItemProps> = ({ item, className }) => {
-    let navigate  = useNavigate();
+    let navigate = useNavigate();
 
     const background = apiConfig.originalImage(item.backdrop_path ? item.backdrop_path : item.poster_path);
-
+    const poster = apiConfig.originalImage(item.poster_path);
+    // 	https://image.tmdb.org/t/p/original/upXYRYVA4Jij3whT5ilP4fTuVw0.jpg
     const setModalActive = async () => {
         const modal = document.querySelector(`#modal_${item.id}`);
         const modalContent = modal?.querySelector('.modal__content');
@@ -31,7 +32,6 @@ const HeroSlideItem: FC<HeroSlideItemProps> = ({ item, className }) => {
                 modalContent.innerHTML = 'No trailer';
             }
         }
-
         modal?.classList.toggle('active');
     };
 
@@ -47,7 +47,7 @@ const HeroSlideItem: FC<HeroSlideItemProps> = ({ item, className }) => {
                     </div>
                 </div>
                 <div className="hero-slide__item__content__poster">
-                    <img src={apiConfig.w500Image(item.poster_path)} alt="" />
+                    <img src={poster} alt="" /> {/* apiConfig.w500Image(item.poster_path) */}
                 </div>
             </div>
         </div>

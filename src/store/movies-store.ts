@@ -11,13 +11,9 @@ import {
 import { AxiosRequestConfig } from 'axios';
 import { action, makeObservable, observable } from 'mobx';
 import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
-import kpApi from '../api/apiKinopoisk';
 import tmdbApi from '../api/tmdbApi';
 
 class MoviesStore {
-    dataTop100MovieList?: IPromiseBasedObservable<TMovieListResponse>;
-    dataBestMoviesList?: IPromiseBasedObservable<TMovieListResponse>;
-
     dataPopularMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataTopMovieList?: IPromiseBasedObservable<TResponseMovieList>;
     dataSearchList?: IPromiseBasedObservable<TResponseMovieList>;
@@ -29,7 +25,7 @@ class MoviesStore {
     topMovieList: TMovieItem[] = [];
     popularMovieList: TMovieItem[] = [];
     searchList: TMovieItem[] = [];
-    totalpages: number = 0;
+    totalpagesMovieList: number = 0;
 
     /**  search **/
     keyword: string = '';
@@ -42,10 +38,6 @@ class MoviesStore {
 
     constructor() {
         makeObservable(this, {
-            /** KP */
-            dataTop100MovieList: observable,
-            dataBestMoviesList: observable,
-
             /**tmdb**/
             dataUpcomingMovieList: observable,
             dataPopularMovieList: observable,
@@ -62,23 +54,13 @@ class MoviesStore {
             dataMovieDetail: observable,
             casts: observable,
             videos: observable,
-            totalpages: observable,
+            totalpagesMovieList: observable,
 
-            // getTop100: action,
             setKeyword: action,
             getMovieDetails: action,
             resetMovieDetails: action,
         });
     }
-
-    get250BestFilms = () => {
-        this.dataBestMoviesList = fromPromise(
-            kpApi.getMovieList('TOP_250_BEST_FILMS', 1).then((data) => {
-                // console.log('data: ', data);
-                return data;
-            }),
-        );
-    };
 
     setKeyword = (value: string) => {
         this.keyword = value;
@@ -95,7 +77,7 @@ class MoviesStore {
                         } else {
                             this.popularMovieList.push(...data.results);
                         }
-                        this.totalpages = data.total_pages;
+                        this.totalpagesMovieList = data.total_pages;
                         return data;
                     }),
                 );
@@ -109,7 +91,7 @@ class MoviesStore {
                         } else {
                             this.topMovieList.push(...data.results);
                         }
-                        this.totalpages = data.total_pages;
+                        this.totalpagesMovieList = data.total_pages;
                         return data;
                     }),
                 );
@@ -123,7 +105,7 @@ class MoviesStore {
                         } else {
                             this.upcomingMovieList.push(...data.results);
                         }
-                        this.totalpages = data.total_pages;
+                        this.totalpagesMovieList = data.total_pages;
                         return data;
                     }),
                 );
@@ -131,7 +113,7 @@ class MoviesStore {
             case 'similar':
                 this.dataSimilarMovieList = fromPromise(
                     tmdbApi.getMovieList(listType, params, id).then((data) => {
-                        this.totalpages = data.total_pages;
+                        this.totalpagesMovieList = data.total_pages;
                         return data;
                     }),
                 );
@@ -140,10 +122,6 @@ class MoviesStore {
             default:
                 break;
         }
-    };
-
-    searchByKeyword = (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
-        tmdbApi.searchByKeyword(category, params);
     };
 
     searchMovie = (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {

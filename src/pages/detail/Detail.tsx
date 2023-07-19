@@ -16,7 +16,6 @@ const Detail = () => {
 
     const { moviesStore, tvStore } = useStores();
     const { getMovieDetails, dataMovieDetail, movieDetail, resetMovieDetails } = moviesStore;
-    // const { popularTVListLoadMore, totalPagesTVList, getPopularTVListLoadMore } = tvStore;
 
     useEffect(() => {
         if (category && id) {
