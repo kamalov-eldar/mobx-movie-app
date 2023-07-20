@@ -21,7 +21,7 @@ const tmdbApi = {
         const url = 'https://api.themoviedb.org/3/movie/upcoming';
         return axiosClient.get<never, TResponseMovieList>(url, params);
     },
-   
+
     // https://api.themoviedb.org/3/tv/{'popular' | 'on_the_air' | 'top_rated'}
     getTvList: async (listType: TListType, params: AxiosRequestConfig<any> | undefined) => {
         const url = 'tv/' + listType;
@@ -62,10 +62,6 @@ const tmdbApi = {
     },
     // https://api.themoviedb.org/3/search/keyword
 
-    searchByKeyword: (keyword: string, params: AxiosRequestConfig<any> | undefined) => {
-        const url = 'search/' + keyword;
-        return axiosClient.get(url, params);
-    },
     detail: (category: TCategoryType, id: number, params: AxiosRequestConfig<any> | undefined) => {
         const url = category + '/' + id;
         return axiosClient.get<never, TMovieDetail>(url, params);

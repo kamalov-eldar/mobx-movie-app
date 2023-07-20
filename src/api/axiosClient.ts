@@ -22,7 +22,8 @@ axiosClient.interceptors.response.use(
     },
     (error) => {
         console.log('error: ', error);
-        throw error;
+        //  setError(true);
+        // throw error;
     },
 );
 

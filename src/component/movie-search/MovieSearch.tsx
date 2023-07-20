@@ -12,12 +12,10 @@ type MovieSearchProps = {
 };
 
 const MovieSearch: FC<MovieSearchProps> = ({ category }) => {
-    const { moviesStore, tvStore } = useStores();
+    const { moviesStore } = useStores();
     const navigate = useNavigate();
 
     const { keyword, setKeyword, searchMovie } = moviesStore;
-
-    const { totalPagesTVList } = tvStore;
 
     const goToSearch = useCallback(() => {
         if (keyword.trim().length > 0) {

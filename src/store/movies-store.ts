@@ -26,6 +26,7 @@ class MoviesStore {
     popularMovieList: TMovieItem[] = [];
     searchList: TMovieItem[] = [];
     totalpagesMovieList: number = 0;
+    uploadError: boolean = false;
 
     /**  search **/
     keyword: string = '';
@@ -48,6 +49,7 @@ class MoviesStore {
             dataSimilarMovieList: observable,
             searchList: observable,
             dataSearchList: observable,
+            uploadError: observable,
 
             keyword: observable,
             movieDetail: observable,
@@ -59,11 +61,16 @@ class MoviesStore {
             setKeyword: action,
             getMovieDetails: action,
             resetMovieDetails: action,
+            setError: action,
         });
     }
 
     setKeyword = (value: string) => {
         this.keyword = value;
+    };
+    
+    setError = (value: boolean) => {
+        this.uploadError = value;
     };
 
     getMovieList = (listType: TListType, params: AxiosRequestConfig<any> | undefined, id?: number) => {

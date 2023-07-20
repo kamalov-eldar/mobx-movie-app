@@ -6,7 +6,6 @@ import MovieCard from '../movie-card/MovieCard';
 import { observer } from 'mobx-react';
 import { OutlineButton } from '../button/Button';
 import MovieSearch from '../movie-search/MovieSearch';
-import RejectUpload from '../reject-upload/RejectUpload';
 import { toJS } from 'mobx';
 import { TCategoryType, TListType } from '../../api/types';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -148,7 +147,7 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
     if ((dataTVList?.state || dataMovieList?.state) === 'rejected') {
         return (
             <div className="loader">
-                <span className="loader__text">Rejected upload</span>
+                <span className="loader__text">Rejected upload - Enable vpn in browser</span>
             </div>
         );
     }
