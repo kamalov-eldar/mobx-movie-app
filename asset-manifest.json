@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/mobx-movie-app/static/css/main.78268b4e.css",
+    "main.css": "/mobx-movie-app/static/css/main.2d7855da.css",
     "main.js": "/mobx-movie-app/static/js/main.20a2f997.js",
     "static/media/boxicons.svg": "/mobx-movie-app/static/media/boxicons.045b05bf2dc119267a90.svg",
     "static/media/footer-bg.jpg": "/mobx-movie-app/static/media/footer-bg.67e95f05e76a8cebf7e2.jpg",
@@ -10,11 +10,11 @@
     "static/media/boxicons.woff2": "/mobx-movie-app/static/media/boxicons.8d765747a5588f36ff61.woff2",
     "static/media/tmovie.png": "/mobx-movie-app/static/media/tmovie.67797e942e59deb68592.png",
     "index.html": "/mobx-movie-app/index.html",
-    "main.78268b4e.css.map": "/mobx-movie-app/static/css/main.78268b4e.css.map",
+    "main.2d7855da.css.map": "/mobx-movie-app/static/css/main.2d7855da.css.map",
     "main.20a2f997.js.map": "/mobx-movie-app/static/js/main.20a2f997.js.map"
   },
   "entrypoints": [
-    "static/css/main.78268b4e.css",
+    "static/css/main.2d7855da.css",
     "static/js/main.20a2f997.js"
   ]
 }
