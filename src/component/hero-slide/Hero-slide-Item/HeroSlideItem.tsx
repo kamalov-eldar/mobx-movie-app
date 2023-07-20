@@ -5,6 +5,7 @@ import { FC } from 'react';
 import Button, { OutlineButton } from '../../button/Button';
 import '../Hero-Slide.scss';
 import { TMovieItem } from '../../../api/types';
+import { IMG } from '../../movie-card/IMG';
 
 type HeroSlideItemProps = {
     item: TMovieItem;
@@ -47,7 +48,7 @@ const HeroSlideItem: FC<HeroSlideItemProps> = ({ item, className }) => {
                     </div>
                 </div>
                 <div className="hero-slide__item__content__poster">
-                    <img src={poster} alt="" /> {/* apiConfig.w500Image(item.poster_path) */}
+                    <IMG path={item.poster_path || item.backdrop_path} size={'w500'} />
                 </div>
             </div>
         </div>

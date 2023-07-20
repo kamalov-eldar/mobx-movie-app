@@ -1,10 +1,15 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Skeleton from '@mui/material/Skeleton';
 
-export const IMG = ({ path }: any) => {
+type IMGProps = {
+    path: string;
+    size: string;
+};
+
+export const IMG: FC<IMGProps> = ({ size, path }) => {
     const [url, setUrl] = useState('');
     useEffect(() => {
-        fetch(`https://image.tmdb.org/t/p/w185/${path}`)
+        fetch(`https://image.tmdb.org/t/p/${size}/${path}`)
             .then((response) => response.blob())
             .then((image) => {
                 setUrl(URL.createObjectURL(image));
@@ -19,5 +24,5 @@ export const IMG = ({ path }: any) => {
         );
     }
 
-    return <img src={url} className="img-card" style={{ width: '100%', height: '100%' }} />;
+    return <img src={url} className="img-card" />;
 };
