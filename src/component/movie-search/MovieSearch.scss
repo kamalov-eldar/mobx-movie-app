@@ -38,7 +38,7 @@ input {
     border-radius: $border-radius;
     color: $txt-color;
     font-family: $font-family;
-    &:focus {
+    /*  &:focus {
         box-shadow: 0 0 0 2px #ff0000; //  #0096bfab;
-    }
+    } */
 }
