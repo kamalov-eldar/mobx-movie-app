@@ -16,6 +16,8 @@ const Detail = () => {
 
     const { moviesStore, tvStore } = useStores();
     const { getMovieDetails, dataMovieDetail, movieDetail, resetMovieDetails } = moviesStore;
+    console.log('dataMovieDetail: ', dataMovieDetail);
+    console.log('movieDetail: ', movieDetail);
 
     useEffect(() => {
         if (category && id) {
@@ -35,67 +37,71 @@ const Detail = () => {
             {dataMovieDetail?.case({
                 pending: () => (
                     <div className="loader">
-                        <span className="loader__text">Загрузка...</span>
+                        <span className="loader__text">Загрузка ...</span>
                     </div>
                 ),
-                rejected: () => <div className="loader">Error</div>,
+                rejected: () => (
+                    <div className="loader">
+                        <span className="loader__text">Error upload</span>
+                    </div>
+                ),
                 fulfilled: () => {
-                    return (
+                    return movieDetail ? (
                         <>
-                            {movieDetail && (
-                                <>
+                            <div
+                                className="banner"
+                                style={{
+                                    backgroundImage: `url(${apiConfig.originalImage(
+                                        movieDetail.backdrop_path || movieDetail.poster_path,
+                                    )})`,
+                                }}
+                            ></div>
+                            <div className="mb-3 movie-content container">
+                                <div className="movie-content__poster">
                                     <div
-                                        className="banner"
+                                        className="movie-content__poster__img"
                                         style={{
                                             backgroundImage: `url(${apiConfig.originalImage(
-                                                movieDetail.backdrop_path || movieDetail.poster_path,
+                                                movieDetail.poster_path || movieDetail.backdrop_path,
                                             )})`,
                                         }}
                                     ></div>
-                                    <div className="mb-3 movie-content container">
-                                        <div className="movie-content__poster">
-                                            <div
-                                                className="movie-content__poster__img"
-                                                style={{
-                                                    backgroundImage: `url(${apiConfig.originalImage(
-                                                        movieDetail.poster_path || movieDetail.backdrop_path,
-                                                    )})`,
-                                                }}
-                                            ></div>
-                                        </div>
-                                        <div className="movie-content__info">
-                                            <h1 className="title">{movieDetail.title /* || movieDetail.name */}</h1>
-                                            <div className="genres">
-                                                {movieDetail.genres &&
-                                                    movieDetail.genres.slice(0, 5).map((genre, i) => (
-                                                        <span key={i} className="genres__item">
-                                                            {genre.name}
-                                                        </span>
-                                                    ))}
-                                            </div>
-                                            <p className="overview">{movieDetail.overview}</p>
-                                            <div className="cast">
-                                                <div className="section__header">
-                                                    <h2>Casts</h2>
-                                                </div>
-                                                <CastList id={movieDetail.id} category={category!} />
-                                            </div>
-                                        </div>
+                                </div>
+                                <div className="movie-content__info">
+                                    <h1 className="title">{movieDetail.title /* || movieDetail.name */}</h1>
+                                    <div className="genres">
+                                        {movieDetail.genres &&
+                                            movieDetail.genres.slice(0, 5).map((genre, i) => (
+                                                <span key={i} className="genres__item">
+                                                    {genre.name}
+                                                </span>
+                                            ))}
                                     </div>
-                                    <div className="container">
-                                        <div className="section mb-3">
-                                            <VideoList id={movieDetail.id} category={category!} />
+                                    <p className="overview">{movieDetail.overview}</p>
+                                    <div className="cast">
+                                        <div className="section__header">
+                                            <h2>Casts</h2>
                                         </div>
-                                        <div className="section mb-3">
-                                            <div className="section__header mb-2">
-                                                <h2>Similar</h2>
-                                            </div>
-                                            <MovieList category={category!} listType="similar" id={movieDetail.id} />
-                                        </div>
+                                        <CastList id={movieDetail.id} category={category!} />
                                     </div>
-                                </>
-                            )}
+                                </div>
+                            </div>
+                            <div className="container">
+                                <div className="section mb-3">
+                                    <VideoList id={movieDetail.id} category={category!} />
+                                </div>
+                                <div className="section mb-3">
+                                    <div className="section__header mb-2">
+                                        <h2>Similar</h2>
+                                    </div>
+                                    <MovieList category={category!} listType="similar" id={movieDetail.id} />
+                                </div>
+                            </div>
                         </>
+                    ) : (
+                        <div className="loader">
+                            <span className="loader__text">Rejected upload - Enable vpn in browser &nbsp;</span>
+                        </div>
                     );
                 },
             })}
