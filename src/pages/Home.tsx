@@ -20,7 +20,6 @@ const Home = () => {
             <div className="container">
                 {categoryPage.map((item, idx) => {
                     const { category, listType, title } = item;
-
                     const link = 'catalog/' + category + '/' + listType;
 
                     return (

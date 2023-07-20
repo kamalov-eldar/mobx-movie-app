@@ -5,6 +5,7 @@ import { spy } from 'mobx';
 import { RootStoreContext } from './root-store-context';
 import RootStore from './store/root-store';
 import { BrowserRouter, HashRouter, Router } from 'react-router-dom';
+import { StyledEngineProvider } from '@mui/material/styles';
 
 spy((evt) => {
     if (evt.type === 'action') {
@@ -16,7 +17,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
     <RootStoreContext.Provider value={new RootStore()}>
         <HashRouter>
-            <App />
+            <StyledEngineProvider injectFirst>
+                <App />
+            </StyledEngineProvider>
         </HashRouter>
     </RootStoreContext.Provider>,
 );
