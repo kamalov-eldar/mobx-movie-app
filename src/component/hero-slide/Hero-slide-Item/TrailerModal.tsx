@@ -1,12 +1,13 @@
 import { FC, useRef } from 'react';
 import Modal, { ModalContent } from '../../modal/Modal';
 import { TMovieItem } from '../../../api/types';
+import { observer } from 'mobx-react';
 
 type TrailerModalProps = {
     item: TMovieItem;
 };
 
-const TrailerModal: FC<TrailerModalProps> = ({ item }) => {
+const TrailerModal: FC<TrailerModalProps> = observer(function TrailerModal({ item }) {
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const onClose = () => {
@@ -22,6 +23,6 @@ const TrailerModal: FC<TrailerModalProps> = ({ item }) => {
             </ModalContent>
         </Modal>
     );
-};
+});
 
 export default TrailerModal;

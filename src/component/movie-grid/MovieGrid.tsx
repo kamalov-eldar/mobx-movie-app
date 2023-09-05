@@ -1,3 +1,4 @@
+/* eslint-disable mobx/missing-observer */
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import './MovieGrid.scss';
 import { useStores } from '../../root-store-context';

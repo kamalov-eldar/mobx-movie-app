@@ -6,13 +6,14 @@ import Button, { OutlineButton } from '../../button/Button';
 import '../Hero-Slide.scss';
 import { TMovieItem } from '../../../api/types';
 import { IMG } from '../../movie-card/IMG';
+import { observer } from 'mobx-react';
 
 type HeroSlideItemProps = {
     item: TMovieItem;
     className: string;
 };
 
-const HeroSlideItem: FC<HeroSlideItemProps> = ({ item, className }) => {
+const HeroSlideItem: FC<HeroSlideItemProps> = observer(function HeroSlideItem({ item, className }) {
     let navigate = useNavigate();
 
     const background = apiConfig.originalImage(item.backdrop_path ? item.backdrop_path : item.poster_path);
@@ -20,6 +21,7 @@ const HeroSlideItem: FC<HeroSlideItemProps> = ({ item, className }) => {
     // 	https://image.tmdb.org/t/p/original/upXYRYVA4Jij3whT5ilP4fTuVw0.jpg
     const setModalActive = async () => {
         const modal = document.querySelector(`#modal_${item.id}`);
+        console.log('modal: ', modal);
         const modalContent = modal?.querySelector('.modal__content');
 
         const videos = await tmdbApi.getVideos('movie', item.id);
@@ -53,6 +55,6 @@ const HeroSlideItem: FC<HeroSlideItemProps> = ({ item, className }) => {
             </div>
         </div>
     );
-};
+});
 
 export default HeroSlideItem;

@@ -3,8 +3,9 @@ import './Footer.scss';
 import bg from '../../assets/footer-bg.jpg';
 import logo from '../../assets/tmovie.png';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react';
 
-const Footer = () => {
+const Footer = observer(function Footer()  {
     return (
         <div className="footer" style={{ backgroundImage: `url(${bg})` }}>
             <div className="foter__content container">
@@ -36,6 +37,6 @@ const Footer = () => {
             </div>
         </div>
     );
-};
+});
 
 export default Footer;

@@ -15,7 +15,7 @@ type MovieCardProps = {
     category: TCategoryType | undefined;
 };
 
-const MovieCard: FC<MovieCardProps> = ({ movieItem, category }) => {
+const MovieCard: FC<MovieCardProps> = observer(function MovieCard({ movieItem, category }) {
     const link = '/' + category + '/' + movieItem.id;
 
     const bg = apiConfig.w185Image(movieItem.poster_path || movieItem.backdrop_path);
@@ -31,6 +31,7 @@ const MovieCard: FC<MovieCardProps> = ({ movieItem, category }) => {
             <h3>{movieItem.title}</h3>
         </Link>
     );
-};
+});
 
-export default observer(MovieCard);
+// eslint-disable-next-line mobx/no-anonymous-observer
+export default MovieCard;

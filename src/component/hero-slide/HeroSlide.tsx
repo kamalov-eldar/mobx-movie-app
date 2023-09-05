@@ -10,7 +10,7 @@ import { useStores } from '../../root-store-context';
 import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
 
-const HeroSlide: FC = () => {
+const HeroSlide: FC = observer(function HeroSlide() {
     const { moviesStore } = useStores();
     const { dataPopularMovieList, popularMovieList, clearMovieList } = moviesStore;
 
@@ -45,7 +45,6 @@ const HeroSlide: FC = () => {
                     </div>
                 ),
                 fulfilled: () => {
-
                     return (
                         <>
                             <Swiper
@@ -72,6 +71,6 @@ const HeroSlide: FC = () => {
             })}
         </div>
     );
-};
+});
 
-export default observer(HeroSlide);
+export default HeroSlide;

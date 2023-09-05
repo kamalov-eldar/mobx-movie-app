@@ -13,7 +13,7 @@ type MovieListProps = {
     id?: number;
 };
 
-const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
+const MovieList: FC<MovieListProps> = observer(function MovieList({ category, listType, id }) {
     const { moviesStore, tvStore } = useStores();
     const { dataPopularMovieList, dataTopMovieList, dataSimilarMovieList, getMovieList } = moviesStore;
     const { dataTopTVList, dataPopularTVList, getTVList } = tvStore;
@@ -76,21 +76,19 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                               </div>
                           ),
                           fulfilled: (list) => (
-                              <>
-                                  <Swiper
-                                      // modules={[Autoplay]}
-                                      grabCursor={true}
-                                      spaceBetween={10}
-                                      slidesPerView={'auto'}
-                                      // autoplay={{ delay: 3000 }}
-                                  >
-                                      {list.results.map((item, i) => (
-                                          <SwiperSlide key={i}>
-                                              <MovieCard movieItem={item} category={category} />
-                                          </SwiperSlide>
-                                      ))}
-                                  </Swiper>
-                              </>
+                              <Swiper
+                                  // modules={[Autoplay]}
+                                  grabCursor={true}
+                                  spaceBetween={10}
+                                  slidesPerView={'auto'}
+                                  // autoplay={{ delay: 3000 }}
+                              >
+                                  {list.results.map((item, i) => (
+                                      <SwiperSlide key={i}>
+                                          <MovieCard movieItem={item} category={category} />
+                                      </SwiperSlide>
+                                  ))}
+                              </Swiper>
                           ),
                       }))}
             {category === 'movie' &&
@@ -190,6 +188,6 @@ const MovieList: FC<MovieListProps> = ({ category, listType, id }) => {
                       }))}
         </div>
     );
-};
+});
 
-export default observer(MovieList);
+export default MovieList;

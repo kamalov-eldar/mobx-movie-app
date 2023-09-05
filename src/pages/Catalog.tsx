@@ -3,11 +3,10 @@ import { useLocation, useParams } from 'react-router-dom';
 import PageHeader from '../component/page-header/PageHeader';
 import MovieGrid from '../component/movie-grid/MovieGrid';
 
-import { observer } from 'mobx-react';
-import { useStores } from '../root-store-context';
 import { TCategoryType, TListType } from '../api/types';
+import { observer } from 'mobx-react';
 
-const Catalog = () => {
+const Catalog = observer(function Catalog() {
     const { category: categoryUrl, listType } = useParams<{ category: TCategoryType; listType: TListType }>();
     const { pathname } = useLocation();
 
@@ -52,6 +51,6 @@ const Catalog = () => {
             </div>
         </>
     );
-};
+});
 
 export default Catalog;

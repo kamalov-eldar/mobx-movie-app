@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { TVideo } from '../../../api/types';
+import { observer } from 'mobx-react';
 
 type VideoProps = {
     item: TVideo;
 };
 
-const Video: FC<VideoProps> = ({ item }) => {
+const Video: FC<VideoProps> = observer(function Video({ item }) {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
     useEffect(() => {
@@ -23,6 +24,6 @@ const Video: FC<VideoProps> = ({ item }) => {
             <iframe src={`https://www.youtube.com/embed/${item.key}`} ref={iframeRef} width="100%" title="video"></iframe>
         </div>
     );
-};
+});
 
 export default Video;

@@ -62,13 +62,15 @@ class MoviesStore {
             getMovieDetails: action,
             resetMovieDetails: action,
             setError: action,
+            getMovieList: action,
+            
         });
     }
 
     setKeyword = (value: string) => {
         this.keyword = value;
     };
-    
+
     setError = (value: boolean) => {
         this.uploadError = value;
     };

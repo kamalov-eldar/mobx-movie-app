@@ -1,18 +1,23 @@
 import { FC, useEffect, useState } from 'react';
 import Skeleton from '@mui/material/Skeleton';
+import { observer } from 'mobx-react';
 
 type IMGProps = {
     path: string;
     size: string;
 };
 
-export const IMG: FC<IMGProps> = ({ size, path }) => {
+export const IMG: FC<IMGProps> = observer(function IMG({ size, path }) {
     const [url, setUrl] = useState('');
     useEffect(() => {
-        fetch(`https://image.tmdb.org/t/p/${size}/${path}`)
+        fetch(`https://image.tmdb.org/t/p/w220_and_h330_face/${path}`)
             .then((response) => response.blob())
             .then((image) => {
-                setUrl(URL.createObjectURL(image));
+                if (!path) {
+                    setUrl('');
+                } else {
+                    setUrl(URL.createObjectURL(image));
+                }
             });
     }, []);
 
@@ -25,4 +30,4 @@ export const IMG: FC<IMGProps> = ({ size, path }) => {
     }
 
     return <img src={url} className="img-card" />;
-};
+});

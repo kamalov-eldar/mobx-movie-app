@@ -10,7 +10,7 @@ type VideoListProps = {
     category: TCategoryType;
 };
 
-const VideoList: FC<VideoListProps> = ({ category, id }) => {
+const VideoList: FC<VideoListProps> = observer(function VideoList({ category, id }) {
     const { moviesStore, tvStore } = useStores();
     const { getVideos, resetCasts, videos } = moviesStore;
 
@@ -28,6 +28,6 @@ const VideoList: FC<VideoListProps> = ({ category, id }) => {
             ))}
         </>
     );
-};
+});
 
-export default observer(VideoList);
+export default VideoList;

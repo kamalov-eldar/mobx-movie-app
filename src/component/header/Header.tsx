@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import './Header.scss';
 import logo from '../../assets/tmovie.png';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react';
 
 const headerNav = [
     {
@@ -19,7 +20,7 @@ const headerNav = [
     },
 ];
 
-const Header = () => {
+const Header = observer(function Header() {
     const { pathname } = useLocation();
     const headerRef = useRef<HTMLDivElement | null>(null);
     const index = headerNav.findIndex((e) => e.path === pathname);
@@ -56,6 +57,6 @@ const Header = () => {
             </div>
         </div>
     );
-};
+});
 
 export default Header;

@@ -17,6 +17,14 @@
     }
 }
 
+.header__wrap {
+    .logo {
+        @include mobile {
+            display: none;
+        }
+    }
+}
+
 .header {
     height: $header-height;
     position: fixed;
@@ -74,7 +82,7 @@
 
         @include mobile {
             position: fixed;
-            bottom: 0;
+            top: 0;
             left: 0;
             height: 5rem;
             width: 100%;

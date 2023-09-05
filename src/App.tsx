@@ -7,8 +7,9 @@ import Footer from './component/footer/Footer';
 import Header from './component/header/Header';
 import { BrowserRouter, Route } from 'react-router-dom';
 import AppRouter from './routes/Routes';
+import { observer } from 'mobx-react';
 
-function App() {
+const App = observer(function App() {
     return (
         <>
             <Header />
@@ -16,6 +17,6 @@ function App() {
             <Footer />
         </>
     );
-}
+});
 
 export default App;

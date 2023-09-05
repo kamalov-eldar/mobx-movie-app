@@ -11,7 +11,7 @@ import CastList from '../../component/cast-list/CastList';
 import VideoList from '../../component/video-list/VideoList';
 import MovieList from '../../component/movie-list/MovieList';
 
-const Detail = () => {
+const Detail = observer(function Detail() {
     const { category, id } = useParams<{ category?: TCategoryType; id?: string }>();
 
     const { moviesStore, tvStore } = useStores();
@@ -107,6 +107,6 @@ const Detail = () => {
             })}
         </>
     );
-};
+});
 
-export default observer(Detail);
+export default Detail;
