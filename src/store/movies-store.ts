@@ -63,7 +63,7 @@ class MoviesStore {
             resetMovieDetails: action,
             setError: action,
             getMovieList: action,
-            
+
         });
     }
 

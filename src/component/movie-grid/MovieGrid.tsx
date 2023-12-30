@@ -1,4 +1,3 @@
-/* eslint-disable mobx/missing-observer */
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import './MovieGrid.scss';
 import { useStores } from '../../root-store-context';
@@ -16,7 +15,7 @@ type MovieGridProps = {
     listType: TListType | undefined;
 };
 
-const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
+const MovieGrid: FC<MovieGridProps> = observer(function MovieGrid({ category, listType }) {
     const [page, setPage] = useState(1);
     const { moviesStore, tvStore } = useStores();
     const { keyword: keywordUrl } = useParams<{ keyword: string }>();
@@ -192,6 +191,6 @@ const MovieGrid: FC<MovieGridProps> = ({ category, listType }) => {
             ) : null}
         </>
     );
-};
+});
 
-export default observer(MovieGrid);
+export default MovieGrid;

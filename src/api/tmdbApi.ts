@@ -44,6 +44,12 @@ const tmdbApi = {
         const url = category + '/' + id + '/videos';
         return axiosClient.get<never, TResponseVideosList>(url, { params: {} });
     },
+    // https://api.themoviedb.org/3/search/movie?query=man
+    // `api/movies/search?query=${debouncedSearchTerm.value}&page=${page.value}`;
+    // `api/vacansies/search?query=`;
+    // const { data } = await useFetch<ApiResponse>(url)
+    // const apiBaseUrl = https://api.themoviedb.org/3/
+    // $fetch(`${config.apiBaseUrl}/search/movie?query=${query}&page=${page}&include_adult=false`,
     search: async (category: TCategoryType, params: AxiosRequestConfig<any> | undefined) => {
         const url = 'search/' + category;
         const data = await axiosClient.get<never, TResponseMovieList>(url, params);

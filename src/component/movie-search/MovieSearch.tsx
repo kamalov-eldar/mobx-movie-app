@@ -11,7 +11,7 @@ type MovieSearchProps = {
     category: TCategoryType | undefined;
 };
 
-const MovieSearch: FC<MovieSearchProps> = ({ category }) => {
+const MovieSearch: FC<MovieSearchProps> = observer(function MovieSearch({ category })  {
     const { moviesStore } = useStores();
     const navigate = useNavigate();
 
@@ -36,6 +36,6 @@ const MovieSearch: FC<MovieSearchProps> = ({ category }) => {
             </Button>
         </div>
     );
-};
+});
 
 export default observer(MovieSearch);
